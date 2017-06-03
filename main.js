@@ -40,6 +40,9 @@ app.use(function(req, res, next) {
 // Add DB connection, with smart chkQry method, to |req|
 app.use(CnnPool.router);
 
+app.use('/Prss', require('./Routes/Account/Prss.js'));
+app.use('/Ssns', require('./Routes/Account/Ssns.js'));
+
 // TODO
 // Special debugging route for /DB DELETE.  Clears all table contents,
 //resets all auto_increment keys to start at 1, and reinserts one admin user.
@@ -79,7 +82,6 @@ app.delete('/DB', function(req, res) {
    });
 
    async.series(cbs, function(err) {
-      req.cnn.release();
       if (err)
          res.status(400).json(err);
       else
@@ -90,7 +92,6 @@ app.delete('/DB', function(req, res) {
 // Handler of last resort. Send a 500 response.
 app.use(function(req, res, next) {
    res.status(404).end();
-   res.cnn.release();
 });
 
 // Parse out command line arguments for a -p port flag

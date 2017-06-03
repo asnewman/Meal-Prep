@@ -12,7 +12,7 @@ var cookieName = 'CHSAuth'; // Cookie key for authentication tokens
 var Session = function Session(user) {
    this.firstName = user.firstName;
    this.lastName = user.lastName;
-   this.id = user.id;
+   this.id = user._id;
    this.email = user.email;
    this.role = user.role;
 
