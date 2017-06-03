@@ -1,1 +1,4 @@
-var app = angular.module('mainApp', ['ngMaterial']);
+var app = angular.module('mainApp', [
+   'ui.router',
+   'ngMaterial'
+]);
