@@ -16,24 +16,24 @@ router.get('/', function(req, res) {
       }
       res.status(200).json(body);
    }
-   req.cnn.release();
 });
 
 router.post('/', function(req, res) {
    var cookie;
    var cnn = req.cnn;
-
-   cnn.query('select * from Person where email = ?', [req.body.email],
+   cnn.collection('User').findOne({email: req.body.email},
    function(err, result) {
-      if (req.validator.check(result.length && result[0].password ===
+      // result.toArray(function(err, doc) {
+      //       console.log(doc);
+      // });
+      if (req.validator.check(result && result.password ===
        req.body.password, Tags.badLogin)) {
-         cookie = ssnUtil.makeSession(result[0], res);
+         cookie = ssnUtil.makeSession(result, res);
          res.location(router.baseURL + '/' + cookie).status(200).end();
       }
 
       if (err)
          res.status(500).end();
-      cnn.release();
    });
 });
 
@@ -45,7 +45,6 @@ router.delete('/:cookie', function(req, res, next) {
       ssnUtil.deleteSession(req.params.cookie);
       res.status(200).end();
    }
-   req.cnn.release();
 });
 
 router.get('/:cookie', function(req, res, next) {
@@ -58,7 +57,6 @@ router.get('/:cookie', function(req, res, next) {
                prsId: ssnUtil.sessions[cookie].id,
                loginTime: ssnUtil.sessions[cookie].loginTime});
    }
-   req.cnn.release();
 });
 
 module.exports = router;
