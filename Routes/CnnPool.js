@@ -11,9 +11,9 @@ var CnnPool = function() {
      poolSize: CnnPool.PoolSize
 
    },function(err, db) {
-       assert.equal(null, err);
-       CnnPool.mongodb = db;
-       }
+       if (!err)
+         CnnPool.mongodb = db;
+   }
    );
 };
 

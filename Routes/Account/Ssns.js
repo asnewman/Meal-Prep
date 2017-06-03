@@ -16,14 +16,13 @@ router.get('/', function(req, res) {
       }
       res.status(200).json(body);
    }
-   req.cnn.release();
 });
 
 router.post('/', function(req, res) {
    var cookie;
    var cnn = req.cnn;
 
-   cnn.query('select * from Person where email = ?', [req.body.email],
+   cnn.User.find({email: req.body.email},
    function(err, result) {
       if (req.validator.check(result.length && result[0].password ===
        req.body.password, Tags.badLogin)) {
@@ -33,7 +32,6 @@ router.post('/', function(req, res) {
 
       if (err)
          res.status(500).end();
-      cnn.release();
    });
 });
 
@@ -45,7 +43,6 @@ router.delete('/:cookie', function(req, res, next) {
       ssnUtil.deleteSession(req.params.cookie);
       res.status(200).end();
    }
-   req.cnn.release();
 });
 
 router.get('/:cookie', function(req, res, next) {
@@ -58,7 +55,6 @@ router.get('/:cookie', function(req, res, next) {
                prsId: ssnUtil.sessions[cookie].id,
                loginTime: ssnUtil.sessions[cookie].loginTime});
    }
-   req.cnn.release();
 });
 
 module.exports = router;
