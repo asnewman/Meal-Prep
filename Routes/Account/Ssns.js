@@ -21,12 +21,14 @@ router.get('/', function(req, res) {
 router.post('/', function(req, res) {
    var cookie;
    var cnn = req.cnn;
-
-   cnn.User.find({email: req.body.email},
+   cnn.collection('User').findOne({email: req.body.email},
    function(err, result) {
-      if (req.validator.check(result.length && result[0].password ===
+      // result.toArray(function(err, doc) {
+      //       console.log(doc);
+      // });
+      if (req.validator.check(result && result.password ===
        req.body.password, Tags.badLogin)) {
-         cookie = ssnUtil.makeSession(result[0], res);
+         cookie = ssnUtil.makeSession(result, res);
          res.location(router.baseURL + '/' + cookie).status(200).end();
       }
 
