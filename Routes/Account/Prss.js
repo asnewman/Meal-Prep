@@ -15,13 +15,12 @@ router.get('/', function(req, res) {
    var handler = function(err, prsArr) {
       if (err)
          res.status(500).end();
-         
+
       // if student is trying to access another accounts information
       if (!req.session.isAdmin() && prsArr.length &&
       prsArr[0].id !== req.session.id) {
          res.json([]);
       }
-
       else
          res.json(prsArr);
 
