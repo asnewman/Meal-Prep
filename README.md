@@ -15,4 +15,4 @@ The purpose of this application is to make meal prepping easier. This applicatio
 
 
 ## REST
-* Documentation
+* [Documentation](https://github.com/ak2795/MealPrep/blob/master/Docs/REST.pdf)
