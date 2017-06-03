@@ -29,26 +29,24 @@ router.get('/', function(req, res) {
    };
 
    if (email && req.session.isAdmin()) {
-      email += '%';
-      req.cnn.chkQry('select id, email from Person where email like ?',
+      req.cnn.chkQry('db.User.find({"email": /?/}, {"id": 1,"email": 1});',
        [email], handler);
    }
 
    else if (email) {
-      email += '%';
-      req.cnn.chkQry('select id, email from Person where email like ?' +
+      req.cnn.chkQry('db.User.find({"email": /?/}, {"id": 1,"email": 1});' +
       'and id = ?', [email, req.session.id],
        handler);
    }
 
    // Empty email but is admin. Should return all emails
    else if (req.session.isAdmin()) {
-      req.cnn.chkQry('select id, email from Person', null, handler);
+      req.cnn.chkQry('db.User.find({}, {"id": 1,"email": 1});', null, handler);
    }
 
    // Empty email but is not an admin. Should only return self email
    else {
-      req.cnn.chkQry('select id, email from Person where id = ?',
+      req.cnn.chkQry('db.User.find({"id": ?}, {"id": 1,"email": 1});',
        [req.session.id], handler);
    }
 });
@@ -73,7 +71,7 @@ router.post('/', function(req, res) {
        .chain(body.termsAccepted || admin, Tags.noTerms)
        .chain(body.password, Tags.missingField, ["password"])
        .check(body.role >= 0, Tags.badValue, ["role"], cb)) {
-         cnn.chkQry('select * from Person where email = ?', body.email, cb);
+         cnn.chkQry('db.User.find({"email": ?});', body.email, cb);
       }
    },
 
@@ -82,7 +80,7 @@ router.post('/', function(req, res) {
          body.termsAccepted = body.termsAccepted && new Date();
          if (!body.termsAccepted)
             body.termsAccepted = null;
-         cnn.chkQry('insert into Person set ?', body, cb);
+         cnn.chkQry('db.User.insertOne(?)', body, cb);
        }
    },
 
@@ -102,7 +100,7 @@ router.get('/:id', function(req, res) {
    var vld = req.validator;
 
    if (vld.checkPrsOK(req.params.id)) {
-      req.cnn.query('select * from Person where id = ?', [req.params.id],
+      req.cnn.query('db.User.find({"id": ?})', [req.params.id],
       function(err, prsArr) {
          if (vld.check(prsArr.length, Tags.notFound)) {
             res.json([{
@@ -142,7 +140,7 @@ router.put('/:id', function(req, res) {
       Tags.forbiddenField, ["termsAccepted"])
       .check(!body.hasOwnProperty("password") || body.oldPassword
        || admin, Tags.noOldPwd, null, cb))
-         cnn.chkQry("select * from Person where id = ?",
+         cnn.chkQry("db.User.find({id: ?});",
           [req.params.id], cb);
    },
 
@@ -151,7 +149,7 @@ router.put('/:id', function(req, res) {
        qRes[0].password === body.oldPassword, Tags.oldPwdMismatch, null, cb)) {
 
          delete req.body.oldPassword;
-         cnn.chkQry("update Person set ? where id = ?",
+         cnn.chkQry("db.User.updateMany({set:?}, {id: ?})",
           [req.body, req.params.id], cb);
       }
    },
@@ -172,7 +170,7 @@ router.delete('/:id', function(req, res) {
    var vld = req.validator;
 
    if (vld.checkAdmin())
-      req.cnn.query('DELETE from Person where id = ?', [req.params.id],
+      req.cnn.query('db.User.deleteMany({id: ?})', [req.params.id],
       function (err, result) {
          if (vld.check(result.affectedRows, Tags.notFound) || !err)
             res.status(200).end();
