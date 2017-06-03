@@ -7,7 +7,7 @@ var CnnPool = function() {
 
    poolCfg.connectionLimit = CnnPool.PoolSize;
 
-   MongoClient.connect(url, {
+   MongoClient.connect(mongoURI, {
      poolSize: CnnPool.PoolSize
 
    },function(err, db) {
@@ -23,6 +23,7 @@ CnnPool.PoolSize = 4;
 CnnPool.router = function(req, res, next) {
    console.log("Getting connection");
    req.cnn = CnnPool.singleton.mongodb
+   console.log("Connection Acquired");
    next();
 };
 
