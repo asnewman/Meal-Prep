@@ -1,40 +1,29 @@
-var mysql = require('mysql');
+var MongoClient = require('mongodb').MongoClient;
+// MongoClient = mysql
+var mongoURI = 'mongodb://localhost/MealPrep'
 
-// Constructor for DB connection pool
 var CnnPool = function() {
    var poolCfg = require('./connection.json');
 
    poolCfg.connectionLimit = CnnPool.PoolSize;
-   this.pool = mysql.createPool(poolCfg);
+
+   MongoClient.connect(url, {
+     poolSize: CnnPool.PoolSize
+
+   },function(err, db) {
+       assert.equal(null, err);
+       CnnPool.mongodb = db;
+       }
+   );
 };
 
-CnnPool.PoolSize = 1;
-
-// Conventional getConnection, drawing from the pool
-CnnPool.prototype.getConnection = function(cb) {
-   this.pool.getConnection(cb);
-};
+CnnPool.PoolSize = 4;
 
 // Router function for use in auto-creating CnnPool for a request
 CnnPool.router = function(req, res, next) {
    console.log("Getting connection");
-   CnnPool.singleton.getConnection(function(err, cnn) {
-      if (err) {
-         res.status(500).json('Failed to get connection' + err);
-      }
-
-      else {
-         console.log("Connection acquired");
-         cnn.chkQry = function(qry, prms, cb) {
-            // Run real qry, checking for error
-            this.query(qry, prms, function(err, res, fields) {
-               cb(err, res, fields);
-            });
-         };
-         req.cnn = cnn;
-         next();
-      }
-   });
+   req.cnn = CnnPool.singleton.mongodb
+   next();
 };
 
 // The one (and probably only) CnnPool object needed for the app
