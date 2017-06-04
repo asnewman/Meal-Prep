@@ -1,6 +1,12 @@
 app.controller('loginController',
- ['$scope', '$state', 'login', 'notifyDlg', '$filter', '$rootScope',
- function($scope, $state, login, nDlg, $filter, $rootScope) {
+ ['$scope', '$state', 'login', '$filter', '$rootScope', '$mdDialog',
+ function($scope, $state, login, $filter, $rootScope, $mdDialog) {
+
+   $scope.loginDlg = function() {
+      $mdDialog.show({
+         templateUrl: 'Login/login.template.html'
+      })
+   }
 
    $scope.login = function() {
       login.login($scope.user)
