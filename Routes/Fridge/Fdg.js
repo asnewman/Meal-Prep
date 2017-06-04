@@ -11,7 +11,7 @@ router.get('/', function(req, res) {
    async.waterfall([
    function(cb) {
       if (vld.check(req.session)) {
-         req.cnn.Fridge.find({ownerId: req.session.id});
+         // req.cnn.Fridge.find({ownerId: req.session.id});
       }
    },
    function(ingrs, cb) {
@@ -21,3 +21,5 @@ router.get('/', function(req, res) {
       // something?
    });
 });
+
+module.exports = router;

@@ -29,15 +29,15 @@ router.post('/:recipeId/Cmts', function (req, res) {
    async.waterfall([
    function(cb) {
       if (vld.check(req.session, Tags.noPermission, null, cb)) {
-         newComment = {'dateAdded': new Date(), 
+         newComment = {'dateAdded': new Date(),
           'ownerId': req.session.id, 'comment': req.body.comment};
          req.cnn.RecipeRating.find({recipeId: req.params.recipeId});
       }
    },
    function(response, cb) {
       if (vld.check(response.length, Tags.notFound, null, cb)) {
-         req.cnn.RecipeRating.updateMany($push: {comments: newComment}, 
-          {recipeId :req.params.recipeId});
+         // req.cnn.RecipeRating.updateMany({$push: {comments: newComment}},
+         //  {recipeId :req.params.recipeId});
       }
    }],
    function(err) {
@@ -58,8 +58,8 @@ router.post('/:recipeId/Lkes', function(req, res) {
    },
    function(response, cb) {
       if (vld.check(response.length, Tags.notFound, null, cb)) {
-         req.cnn.RecipeRating.updateMany($inc: {likes: 1},
-          {recipeId :req.params.recipeId});
+         // req.cnn.RecipeRating.updateMany({$inc: {likes: 1}},
+         //  {recipeId :req.params.recipeId});
       }
    }],
    function(err) {
@@ -80,8 +80,8 @@ router.delete('/:recipeId/Lkes', function(req, res) {
    },
    function(response, cb) {
       if (vld.check(response.length, Tags.notFound, null, cb)) {
-         req.cnn.RecipeRating.updateMany($inc: {likes: -1},
-          {recipeId :req.params.recipeId});
+         // req.cnn.RecipeRating.updateMany({$inc: {likes: -1}},
+         //  {recipeId :req.params.recipeId});
       }
    }],
    function(err) {
@@ -97,13 +97,13 @@ router.post('/:recipeId/Dlks', function(req, res) {
    async.waterfall([
    function(cb) {
       if (vld.check(req.session, Tags.noPermission, null, cb)) {
-         req.cnn.RecipeRating.find({recipeId: req.params.recipeId});
+         // req.cnn.RecipeRating.find({recipeId: req.params.recipeId});
       }
    },
    function(response, cb) {
       if (vld.check(response.length, Tags.notFound, null, cb)) {
-         req.cnn.RecipeRating.updateMany($inc: {dislikes: 1},
-          {recipeId :req.params.recipeId});
+         // req.cnn.RecipeRating.updateOne({$inc: {dislikes: 1}},
+         //  {recipeId :req.params.recipeId});
       }
    }],
    function(err) {
@@ -124,8 +124,8 @@ router.delete('/:recipeId/Dlks', function(req, res) {
    },
    function(response, cb) {
       if (vld.check(response.length, Tags.notFound, null, cb)) {
-         req.cnn.RecipeRating.updateMany($inc: {dislikes: -1},
-          {recipeId :req.params.recipeId});
+         // req.cnn.RecipeRating.updateMany({$inc: {dislikes: -1}},
+         //  {recipeId :req.params.recipeId});
       }
    }],
    function(err) {
@@ -134,19 +134,4 @@ router.delete('/:recipeId/Dlks', function(req, res) {
       }
    });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+module.exports = router;
