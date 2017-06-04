@@ -30,8 +30,8 @@ router.post('/', function(req, res) {
    function(cb) {
       if(vld.check(req.session), Tags.noPermission, null, cb &&
        vld.hasFields(req.body, ["recipeId, date"], cb)) {
-         req.cnn.Recipe.insertOne({recipeId: req.body.recipeId, 
-          date: req.body.date, ownerId: req.session.id});
+         // req.cnn.Recipe.insertOne({recipeId: req.body.recipeId,
+         //  date: req.body.date, ownerId: req.session.id});
       }
    }],
    function(err) {
@@ -51,9 +51,9 @@ router.delete('/:id', function(req, res) {
       }
    },
    function(response, cb) {
-      if (vld.check(response.id === req.session.id), 
+      if (vld.check(response.id === req.session.id),
        Tags.noPermission, null, cb) {
-         req.cnn.Recipe.deleteMany({id: req.params.id});
+         // req.cnn.Recipe.deleteMany({id: req.params.id});
       }
    }],
    function(err) {
@@ -62,23 +62,4 @@ router.delete('/:id', function(req, res) {
       }
    });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+module.exports = router;
