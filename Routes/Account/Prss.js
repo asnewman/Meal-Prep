@@ -120,7 +120,7 @@ router.delete('/', function(req, res) {
    function(err) {
       if (!err)
          res.status(200).end();
-   }
+   });
 });
 
 module.exports = router;
