@@ -33,10 +33,11 @@ router.post('/', function(req, res) {
    function(cb) { // Check properties and search for Email duplicates
 
       if (vld.hasFields(body, ["email", "lastName", "password"], cb) &&
-       vld.chain(body.email, Tags.missingField, ["email"])
+       vld.chain(!body.role, Tags.noPermission)
+       .chain(body.email, Tags.missingField, ["email"])
        .chain(body.lastName, Tags.missingField, ["lastName"])
        .chain(body.termsAccepted, Tags.noTerms)
-       .chain(body.password, Tags.missingField, ["password"])) {
+       .check(body.password, Tags.missingField, ["password"], cb)) {
          cnn.collection('User').findOne({email: body.email}, cb);
       }
    },
@@ -44,14 +45,13 @@ router.post('/', function(req, res) {
    function(existingPrss, cb) {  // If no duplicates, insert new Person
       if (vld.check(!existingPrss, Tags.dupEmail, null, cb)) {
          body.termsAccepted = body.termsAccepted && new Date();
-         if (!body.termsAccepted)
-            body.termsAccepted = null;
+         body.role = 0;
          cnn.collection('User').insertOne(body, cb);
        }
    },
 
    function(result, cb) { // Return location of inserted Person
-      res.location(router.baseURL + '/' + result._id).end();
+      res.location(router.baseURL + '/' + result.insertedId).end();
       cb();
    }],
 
@@ -69,7 +69,8 @@ router.put('/', function(req, res) {
    async.waterfall([
    function (cb) {
       console.log(req.session.id);
-      if (vld.chain(!body.hasOwnProperty("email"),
+      if (vld.chain(!body.role, Tags.badValue, ['role'])
+       .chain(!body.hasOwnProperty("email"),
        Tags.forbiddenField, ["email"])
        .chain(!body.hasOwnProperty("whenRegistered"),
        Tags.forbiddenField, ["whenRegistered"])
