@@ -2,6 +2,7 @@ var Express = require('express');
 var Tags = require('../Validator.js').Tags;
 var router = Express.Router({caseSensitive: true});
 var async = require('async');
+var ObjectId = require('mongodb').ObjectId; 
 
 router.baseURL = '/Rcp';
 
@@ -10,8 +11,11 @@ router.get('/', function(req, res) {
 
    async.waterfall([
    function(cb) {
-      if(vld.check(req.session), Tags.noPermission, null, cb) {
-         req.cnn.Recipe.find();
+      if(vld.check(req.session, Tags.noPermission, null, cb)) {
+         req.cnn.collection('Recipe').find({ownerId: req.session.id}).toArray(function(err, docs) {
+            if (err) cb(err);
+            cb(err, docs); // no errors
+         });
       }
    },
    function(rcps, cb) {
@@ -19,19 +23,19 @@ router.get('/', function(req, res) {
       cb();
    }],
    function(err) {
-      // maybe need to release?
+      if (err) res.status(500).end();
    });
 });
 
 router.post('/', function(req, res) {
-   var vld = validator;
+   var vld = req.validator;
 
    async.waterfall([
    function(cb) {
-      if(vld.check(req.session), Tags.noPermission, null, cb &&
-       vld.hasFields(req.body, ["recipeId, date"], cb)) {
-         // req.cnn.Recipe.insertOne({recipeId: req.body.recipeId,
-         //  date: req.body.date, ownerId: req.session.id});
+      if(vld.check(req.session, Tags.noPermission, null, cb) &&
+       vld.hasFields(req.body, ["recipeId", "date"], cb)) {
+         req.cnn.collection('Recipe').insertOne({recipeId: req.body.recipeId,
+          date: req.body.date, ownerId: req.session.id}, cb);
       }
    }],
    function(err) {
@@ -42,18 +46,20 @@ router.post('/', function(req, res) {
 });
 
 router.delete('/:id', function(req, res) {
-   var vld = validator;
+   var vld = req.validator;
 
    async.waterfall([
    function(cb) {
-      if (vld.check(req.session), Tags.noPermission, null, cb) {
-         req.cnn.Recipe.find({id: req.params.id});
+      if (vld.check(req.session, Tags.noPermission, null, cb)) {
+         req.cnn.collection('Recipe').findOne(
+          {_id: new ObjectId(req.params.id)}, cb);
       }
    },
    function(response, cb) {
-      if (vld.check(response.id === req.session.id),
-       Tags.noPermission, null, cb) {
-         // req.cnn.Recipe.deleteMany({id: req.params.id});
+      if (vld.check(response, Tags.badValue, null, cb) && 
+       vld.checkPrsOK(response.ownerId)) {
+         req.cnn.collection('Recipe').deleteOne(
+          {_id: new ObjectId(req.params.id)}, cb);
       }
    }],
    function(err) {
