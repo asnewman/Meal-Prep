@@ -1,5 +1,6 @@
 var Express = require('express');
 var Tags = require('../Validator.js').Tags;
+var ssnUtil = require('../Session.js');
 var router = Express.Router({caseSensitive: true});
 var async = require('async');
 var mongodb = require('mongodb');
@@ -103,11 +104,23 @@ router.put('/', function(req, res) {
 router.delete('/', function(req, res) {
    var vld = req.validator;
 
-   req.cnn.collection('User').deleteOne({_id: req.session.id},
-   function (err, result) {
-      if (vld.check(result.deletedCount, Tags.notFound) || !err)
+   async.waterfall([
+   function(cb) {
+      req.cnn.collection('User').deleteOne({_id: req.session.id}, cb);
+   },
+   function (result, cb) {
+      if (vld.check(result.deletedCount, Tags.notFound) || !err) {
+         req.cnn.collection('Recipe').deleteMany({ownerId: req.session.id}, cb);
+      }
+   },
+   function (result, cb) {
+      ssnUtil.deleteSession(req.cookies[ssnUtil.cookieName]);
+      cb()
+   }],
+   function(err) {
+      if (!err)
          res.status(200).end();
-   });
+   }
 });
 
 module.exports = router;
