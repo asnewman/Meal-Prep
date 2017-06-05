@@ -11,27 +11,31 @@ app.controller('loginController',
    $scope.login = function() {
       login.login($scope.user)
       .then(function(user) {
-         $scope.$parent.user = user;
+         $rootScope.user = user;
+         // console.log($scope.user);
+         login.setCookieData(JSON.stringify($scope.user));
          $state.go('home');
+         window.location.reload();
       })
       .catch(function(err) {
-         if (err && err.data)
-            nDlg.show($scope, $filter('tagError')(err.data[0], $rootScope),
-             "Error");
+         // if (err && err.data)
+            // $mdDialog.show($scope, $filter('tagError')(err.data[0], $rootScope),
+            //  "Error");
       });
    };
 
    $scope.logout = function() {
       login.logout()
+      // .then(function() {
+      //    return $mdDialog.show($scope, "Logout successful", "Logout");
+      // })
       .then(function() {
-         return nDlg.show($scope, "Logout successful", "Logout");
-      })
-      .then(function() {
+         login.clearCookieData();
          $state.go('home');
          window.location.reload();
       })
       .catch(function() {
-         nDlg.show($scope, "Failed to logout", "Error");
+         $mdDialog.show($scope, "Failed to logout", "Error");
       })
    };
 }]);

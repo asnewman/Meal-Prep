@@ -15,5 +15,10 @@ app.config(['$stateProvider', '$urlRouterProvider',
          url: '/register',
          templateUrl: 'Register/register.template.html',
          controller: 'registerController',
+      })
+      .state('fridge', {
+          url: '/fridge',
+          templateUrl: 'Fridge/fridge.template.html',
+          controller: 'fridgeController'
       });
    }]);

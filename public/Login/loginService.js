@@ -1,7 +1,8 @@
-app.factory("login", ["$http", "$rootScope",
-function($http, $rootScope) {
+app.factory("login", ["$http", "$rootScope", "$cookies",
+function($http, $rootScope, $cookies) {
    var cookie;
    var user;
+   var storeUser;
 
    return {
       login: function(loginData) {
@@ -14,7 +15,7 @@ function($http, $rootScope) {
             return $http.get("Ssns/" + cookie);
          })
          .then(function(response) {
-            return $http.get('/Prss/' + response.data.prsId);
+            return $http.get('/Prss');
          })
          .then(function(response) {
             user = response.data[0];
@@ -30,6 +31,18 @@ function($http, $rootScope) {
       },
       getUser: function() {
          return user;
-      }
+      },
+      setCookieData: function(userInfo) {
+         storeUser = userInfo;
+         $cookies.put("user", storeUser);
+      },
+      getCookieData: function() {
+			storeUser = $cookies.get("user");
+			return storeUser;
+		},
+		clearCookieData: function() {
+			storeUser = null;
+			$cookies.remove("user");
+		}
    };
 }]);
