@@ -1,4 +1,4 @@
-<div>
+<div ng-controller="loginController">
    <md-card>
       <md-toolbar>
          <div class="md-toolbar-tools">
@@ -17,7 +17,7 @@
                <input type="password" name="password" ng-model="user.password" placeholder="password" required=""/>
                <div ng-message="required" class="my-message">Please enter your password.</div>
             </md-input-container>
-            <md-button ng-disabled="!Form.$valid" ng-click="login" class="md-raised md-primary">&nbsp Login &nbsp</md-button>
+            <md-button ng-disabled="!Form.$valid" ng-click="login()" class="md-raised md-primary">&nbsp Login &nbsp</md-button>
          </form>
       </md-card-content>
    </md-card>
