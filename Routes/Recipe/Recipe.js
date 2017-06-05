@@ -50,7 +50,6 @@ router.delete('/:id', function(req, res) {
 
    async.waterfall([
    function(cb) {
-      console.log(req.params.id);
       if (vld.check(req.session, Tags.noPermission, null, cb)) {
          req.cnn.collection('Recipe').findOne(
           {_id: new ObjectId(req.params.id)}, cb);
@@ -59,13 +58,11 @@ router.delete('/:id', function(req, res) {
    function(response, cb) {
       if (vld.check(response, Tags.badValue, null, cb) && 
        vld.checkPrsOK(response.ownerId)) {
-         console.log("Made it!");
          req.cnn.collection('Recipe').deleteOne(
           {_id: new ObjectId(req.params.id)}, cb);
       }
    }],
    function(err) {
-      console.log(err);
       if (!err) {
          res.status(200).end();
       }
