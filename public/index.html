@@ -18,45 +18,26 @@
 <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
 
 <script src="mpapp.js"></script>
-<script src="ui-routes.js"></script>
-<script src="Login/loginController.js"></script>
-<script src="Login/loginService.js"></script>
 
+<script src="Home/homeController.js"></script>
+<script src="Login/loginService.js"></script>
+<script src="Login/loginController.js"></script>
+<script src="Register/registerController.js"></script>
+<script src="ui-routes.js"></script>
 
 
 <body ng-app="mainApp" ng-cloak layout="column">
    <!-- Container #1 (see wireframe) -->
      <md-toolbar layout="row" class="md-toolbar-tools">
-       <h1>Meal Prep Planner</h1>
+       <a class="md-headline" ui-sref="home">Meal Prep Planner</a>
        <ul class="nav navbar-nav">
           <li ng-if="!user" style="list-style:none;">
-             <md-button>Login</md-button>
-             <md-button>Register</md-button>
+             <md-button ng-controller="loginController" ng-click="loginDlg()">Login</md-button>
+             <md-button ui-sref="register">Register</md-button>
           </li>
        </ul>
 
      </md-toolbar>
-
-     <!-- Container #2 -->
-     <div ng-if="!!user" flex layout="row">
-       <!-- Container #3 -->
-       <md-sidenav md-is-locked-open="true" class="md-whiteframe-4dp">
-         Sidenav
-       </md-sidenav>
-
-       <!-- Container #4 -->
-       <md-content flex id="content">
-         Content
-       </md-content>
-     </div>
-
-     <!-- Container 5 -->
-     <div ng-if="!user" flex layout="row">
-        <!-- Container #6 -->
-       <md-content flex id="content">
-         List of food images
-       </md-content>
-     </div>
-
+     <ui-view/>
 </body>
 </html>
