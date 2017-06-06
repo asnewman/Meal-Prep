@@ -1,6 +1,6 @@
 app.controller('loginController',
- ['$scope', '$state', 'login', '$filter', '$rootScope', '$mdDialog', 'dialog',
- function($scope, $state, login, $filter, $rootScope, $mdDialog, dialog) {
+ ['$scope', '$state', 'login', '$filter', '$rootScope', '$mdDialog',
+ function($scope, $state, login, $filter, $rootScope, $mdDialog) {
 
    $scope.loginDlg = function() {
       $mdDialog.show({
@@ -26,11 +26,17 @@ app.controller('loginController',
    $scope.logout = function() {
       login.logout()
       .then(function() {
-         // TODO
-         return dialog.show($scope, "Logout successful", "Logout");
-         // return $mdDialog.show({
-         //    templateUrl: 'Util/template.html'
-         // });
+         // Handling the dialog
+         alert = $mdDialog.alert({
+            title: "Logout",
+            textContent: "Logout successful.",
+            ok: 'Close'
+         });
+
+         return $mdDialog.show(alert)
+         .finally(function() {
+          alert = undefined;
+        });
       })
       .then(function() {
          login.clearCookieData();
