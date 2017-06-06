@@ -1,24 +1,34 @@
 var Express = require('express');
 var Tags = require('../Validator.js').Tags;
+var ssnUtil = require('../Session.js');
 var router = Express.Router({caseSensitive: true});
 var async = require('async');
 var mongodb = require('mongodb');
+var ObjectId = require('mongodb').ObjectId;
 
 router.baseURL = '/Prss';
 
 
 /* Much nicer versions */
-router.get('/', function(req, res) {
+router.get('/:id', function(req, res) {
 
    var handler = function(err, prsArr) {
-      if (err)
+      if (err) {
          res.status(500).end();
-
-      res.json(prsArr);
+      }
+      else {
+         res.json(prsArr);
+      }
    };
+
+   if (req.params.id !== req.session.id.toString()) {
+      res.status(403).end();
+   }
    // Empty email but is not an admin. Should only return self email
-   req.cnn.collection('User').findOne({_id: req.session.id},
-    {id: 1, email: 1, firstName: 1, lastName: 1}, handler);
+   else {
+      req.cnn.collection('User').findOne({_id: req.session.id},
+       {id: 1, email: 1, firstName: 1, lastName: 1}, handler);
+   }
 });
 
 router.post('/', function(req, res) {
@@ -32,10 +42,11 @@ router.post('/', function(req, res) {
    function(cb) { // Check properties and search for Email duplicates
 
       if (vld.hasFields(body, ["email", "lastName", "password"], cb) &&
-       vld.chain(body.email, Tags.missingField, ["email"])
+       vld.chain(!body.role, Tags.noPermission)
+       .chain(body.email, Tags.missingField, ["email"])
        .chain(body.lastName, Tags.missingField, ["lastName"])
        .chain(body.termsAccepted, Tags.noTerms)
-       .chain(body.password, Tags.missingField, ["password"])) {
+       .check(body.password, Tags.missingField, ["password"], cb)) {
          cnn.collection('User').findOne({email: body.email}, cb);
       }
    },
@@ -43,14 +54,13 @@ router.post('/', function(req, res) {
    function(existingPrss, cb) {  // If no duplicates, insert new Person
       if (vld.check(!existingPrss, Tags.dupEmail, null, cb)) {
          body.termsAccepted = body.termsAccepted && new Date();
-         if (!body.termsAccepted)
-            body.termsAccepted = null;
+         body.role = 0;
          cnn.collection('User').insertOne(body, cb);
        }
    },
 
    function(result, cb) { // Return location of inserted Person
-      res.location(router.baseURL + '/' + result._id).end();
+      res.location(router.baseURL + '/' + result.insertedId).end();
       cb();
    }],
 
@@ -60,15 +70,16 @@ router.post('/', function(req, res) {
    });
 });
 
-router.put('/', function(req, res) {
+router.put('/:id', function(req, res) {
    var vld = req.validator;
    var body = req.body;
    var cnn = req.cnn;
 
    async.waterfall([
    function (cb) {
-      console.log(req.session.id);
-      if (vld.chain(!body.hasOwnProperty("email"),
+      if (vld.chain(req.params.id === req.session.id.toString(), Tags.noPermission)
+       .chain(!body.role, Tags.badValue, ['role'])
+       .chain(!body.hasOwnProperty("email"),
        Tags.forbiddenField, ["email"])
        .chain(!body.hasOwnProperty("whenRegistered"),
        Tags.forbiddenField, ["whenRegistered"])
@@ -100,12 +111,29 @@ router.put('/', function(req, res) {
 });
 
 /* Only allow deleting of currently logged in user */
-router.delete('/', function(req, res) {
+router.delete('/:id', function(req, res) {
    var vld = req.validator;
 
-   req.cnn.collection('User').deleteOne({_id: req.session.id},
-   function (err, result) {
-      if (vld.check(result.deletedCount, Tags.notFound) || !err)
+   async.waterfall([
+   function(cb) {
+      console.log(req.params.id === req.session.id.toString());
+      console.log(req.params.id);
+      console.log(req.session.id);
+      if (vld.check(req.params.id === req.session.id.toString(), Tags.noPermission, null, cb)) {
+         req.cnn.collection('User').deleteOne({_id: req.session.id}, cb);
+      }
+   },
+   function (result, cb) {
+      if (vld.check(result.deletedCount, Tags.notFound, null, cb)) {
+         req.cnn.collection('Recipe').deleteMany({ownerId: req.session.id}, cb);
+      }
+   },
+   function (result, cb) {
+      ssnUtil.deleteSession(req.cookies[ssnUtil.cookieName]);
+      cb()
+   }],
+   function(err) {
+      if (!err)
          res.status(200).end();
    });
 });
