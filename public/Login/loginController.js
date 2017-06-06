@@ -12,8 +12,7 @@ app.controller('loginController',
       login.login($scope.user)
       .then(function(user) {
          $rootScope.user = user;
-         // console.log($scope.user);
-         login.setCookieData(JSON.stringify($scope.user));
+         login.setCookieData(JSON.stringify(user));
          $state.go('home');
          window.location.reload();
       })

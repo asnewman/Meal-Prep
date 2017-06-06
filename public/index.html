@@ -36,8 +36,8 @@
              <md-button ng-controller="loginController" ng-click="loginDlg()">Login</md-button>
              <md-button ui-sref="register">Register</md-button>
           </li>
-          <li ng-if="!!user" style="list-style:none;">
-            {{user}}
+          <li ng-if="!!user" class="md-subhead" style="list-style:none;">
+            {{user.firstName + " " + user.lastName}}
              <md-button ng-controller="loginController" ng-click="logout()">Logout</md-button>
           </li>
        </ul>
