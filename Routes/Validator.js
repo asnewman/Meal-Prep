@@ -22,7 +22,8 @@ Validator.Tags = {
    dupEnrollment: "dupEnrollment",  // Duplicate enrollment
    queryFailed: "queryFailed",
    forbiddenField: "forbiddenField",
-   oldPwdMismatch: "oldPwdMismatch"
+   oldPwdMismatch: "oldPwdMismatch",
+   dupIngredient: "dupIngredient"
 };
 
 // Check |test|.  If false, add an error with tag and possibly empty array

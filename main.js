@@ -44,7 +44,7 @@ app.use('/Prss', require('./Routes/Account/Prss.js'));
 app.use('/Ssns', require('./Routes/Account/Ssns.js'));
 app.use('/Rcp', require('./Routes/Recipe/Recipe.js'));
 app.use('/Rat', require('./Routes/Recipe/RecipeRatings.js'));
-app.use('/Fridge', require('./Routes/Fridge/Fdg.js'));
+app.use('/Fdg', require('./Routes/Fridge/Fdg.js'));
 
 app.delete('/DB', function(req, res) {
 

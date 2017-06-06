@@ -12,7 +12,8 @@ router.get('/', function(req, res) {
    async.waterfall([
    function(cb) {
       if(vld.check(req.session, Tags.noPermission, null, cb)) {
-         req.cnn.collection('Recipe').find({ownerId: req.session.id}).toArray(function(err, docs) {
+         req.cnn.collection('Recipe').find(
+          {ownerId: req.session.id}).toArray(function(err, docs) {
             if (err) cb(err);
             cb(err, docs); // no errors
          });
