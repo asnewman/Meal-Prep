@@ -17,9 +17,19 @@ app.controller('loginController',
          window.location.reload();
       })
       .catch(function(err) {
-         // if (err && err.data)
-            // $mdDialog.show($scope, $filter('tagError')(err.data[0], $rootScope),
-            //  "Error");
+         // Display any errors if there are any
+         if (err && err.data) {
+            alert = $mdDialog.alert({
+               title: "Error",
+               textContent: $filter('tagError')(err.data[0]),
+               ok: 'Close'
+            });
+
+            return $mdDialog.show(alert)
+            .finally(function() {
+             alert = undefined;
+           });
+         }
       });
    };
 
