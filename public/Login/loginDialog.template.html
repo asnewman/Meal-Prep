@@ -7,7 +7,7 @@
       </md-toolbar>
       <md-card-content>
          <form name="Form">
-            <md-input-container class="md-block">
+            <!-- <md-input-container class="md-block">
                <label>Login</label>
                <input type="text" name="email" ng-model="user.email" placeholder="login" required=""/>
                <div ng-message="required" class="my-message">Please enter your email.</div>
@@ -16,8 +16,8 @@
                <label>Password</label>
                <input type="password" name="password" ng-model="user.password" placeholder="password" required=""/>
                <div ng-message="required" class="my-message">Please enter your password.</div>
-            </md-input-container>
-            <md-button ng-disabled="!Form.$valid" ng-click="login()" class="md-raised md-primary">&nbsp Login &nbsp</md-button>
+            </md-input-container> -->
+            <md-button ng-click="closeDialog()" class="md-primary">Close</md-button>
          </form>
       </md-card-content>
    </md-card>
