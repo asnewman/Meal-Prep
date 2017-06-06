@@ -8,11 +8,12 @@
 </head>
 
 <!-- Angular Material requires Angular.js Libraries -->
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-aria.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-messages.min.js"></script>
 <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+<script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
 
 <!-- Angular Material Library -->
 <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
@@ -26,7 +27,7 @@
 <script src="ui-routes.js"></script>
 
 
-<body ng-app="mainApp" ng-cloak layout="column">
+<body ng-app="mainApp" ng-cloak layout="column" ng-controller="homeController" ng-init="loadPage()">
    <!-- Container #1 (see wireframe) -->
      <md-toolbar layout="row" class="md-toolbar-tools">
        <a class="md-headline" ui-sref="home">Meal Prep Planner</a>
@@ -34,6 +35,10 @@
           <li ng-if="!user" style="list-style:none;">
              <md-button ng-controller="loginController" ng-click="loginDlg()">Login</md-button>
              <md-button ui-sref="register">Register</md-button>
+          </li>
+          <li ng-if="!!user" style="list-style:none;">
+            {{user}}
+             <md-button ng-controller="loginController" ng-click="logout()">Logout</md-button>
           </li>
        </ul>
 
