@@ -1,30 +1,42 @@
 app.controller('registerController',
- ['$scope', '$state', '$http', 'login', '$rootScope',
- function($scope, $state, $http, login, $rootScope) {
+ ['$scope', '$state', '$http', 'login', '$rootScope', '$mdDialog', '$filter',
+ function($scope, $state, $http, login, $rootScope, $mdDialog, $filter) {
    $scope.root = $rootScope;
    $scope.user = {role: 0};
-   $scope.errors = [];
 
    $scope.registerUser = function() {
       $http.post("Prss", $scope.user)
       .then(function() {
-         return nDlg.show($scope, "Registration succeeded." +
-          "Login automatically?", "Login", ["Yes", "No"]);
-      })
-      .then(function(btn) {
-         if (btn === "Yes") {
-            return login.login($scope.user);
-         }
-         else {
-            $state.go('home');
-         }
+         alert = $mdDialog.alert({
+            title: "Registration",
+            textContent: "Registration successful.",
+            ok: 'Close'
+         });
+
+         return $mdDialog.show(alert)
+         .finally(function() {
+          alert = undefined;
+        });
+
+        return login.login($scope.user);
       })
       .then(function(user) {
          $scope.$parent.user = user;
          $state.go('home');
        })
       .catch(function(err) {
-         $scope.errors = err.data;
+         if (err && err.data) {
+            alert = $mdDialog.alert({
+               title: "Error",
+               textContent: $filter('tagError')(err.data[0]),
+               ok: 'Close'
+            });
+
+            return $mdDialog.show(alert)
+            .finally(function() {
+             alert = undefined;
+           });
+         }
       });
    };
 
