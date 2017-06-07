@@ -40,11 +40,13 @@ app.use(function(req, res, next) {
 // Add DB connection, with smart chkQry method, to |req|
 app.use(CnnPool.router);
 
+
 app.use('/Prss', require('./Routes/Account/Prss.js'));
 app.use('/Ssns', require('./Routes/Account/Ssns.js'));
 app.use('/Rcp', require('./Routes/Recipe/Recipe.js'));
 app.use('/Rat', require('./Routes/Recipe/RecipeRatings.js'));
 app.use('/Fridge', require('./Routes/Fridge/Fdg.js'));
+app.use('/Proxy', require('./Routes/Proxy/Proxy.js'));
 
 app.delete('/DB', function(req, res) {
 
