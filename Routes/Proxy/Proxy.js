@@ -36,15 +36,4 @@ router.get('/get', function(req, res) {
    });
 });
 
-
-
-
-
-
-http://food2fork.com/api/get?key=25cf74557af63dac0e5a8a938e9fb182&rId=35171
-
-
-
-
-
 module.exports = router;
