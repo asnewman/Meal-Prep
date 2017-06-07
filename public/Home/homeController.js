@@ -1,7 +1,12 @@
-app.controller('homeController', ['$scope', 'login',
- function($scope, login) {
+app.controller('homeController', ['$scope', 'login', 'food',
+ function($scope, login, food) {
    $scope.loadPage = function() {
-      $scope.user = login.getCookieData();
-      console.log(JSON.stringify($scope.user));
+      var user = login.getCookieData();
+      if (user)
+         $scope.user = JSON.parse(user);
+      else {
+         $scope.recipes = food.searchRecipes();
+         // console.log($scope.recipes);
+      }
    }
 }]);

@@ -131,3 +131,11 @@ span.name {
   font-size: 1.1em;
   padding-left: 5px;
 }
+
+.navigation {
+   width: 55%;
+}
+
+.user-nave {
+   align: right;
+}
