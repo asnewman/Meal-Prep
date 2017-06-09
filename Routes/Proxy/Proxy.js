@@ -5,7 +5,6 @@ var router = Express.Router({caseSensitive: true});
 var async = require('async');
 var request = require('request');
 
-/* Much nicer versions */
 router.get('/search', function(req, res) {
    var query = {'q': req.query.q, 'key': req.query.key};
    console.log(req.query.key);
