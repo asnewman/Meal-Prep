@@ -13,6 +13,7 @@ app.controller('loginController',
       .then(function(user) {
          $rootScope.user = user;
          login.setCookieData(JSON.stringify(user));
+         login.setCookie($rootScope.cookie);
          $state.go('home');
          window.location.reload();
       })
@@ -34,7 +35,8 @@ app.controller('loginController',
    };
 
    $scope.logout = function() {
-      login.logout()
+      var cookie = login.getCookie();
+      login.logout(cookie)
       .then(function() {
          // Handling the dialog
          alert = $mdDialog.alert({

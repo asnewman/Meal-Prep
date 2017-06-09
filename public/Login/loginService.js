@@ -3,6 +3,7 @@ function($http, $rootScope, $cookies) {
    var cookie;
    var user;
    var storeUser;
+   var storeCookie;
 
    return {
       login: function(loginData) {
@@ -22,8 +23,8 @@ function($http, $rootScope, $cookies) {
             return response.data;
          });
       },
-      logout: function() {
-         return $http.delete("Ssns/" + cookie)
+      logout: function(deleteCookie) {
+         return $http.delete("Ssns/" + deleteCookie)
          .then(function() {
             user = null;
             cookie = null;
@@ -31,6 +32,14 @@ function($http, $rootScope, $cookies) {
       },
       getUser: function() {
          return user;
+      },
+      setCookie: function(cookie) {
+         storeCookie = cookie;
+         $cookies.put("cookie", storeCookie);
+      },
+      getCookie: function() {
+         storeCookie = $cookies.get("cookie");
+         return storeCookie;
       },
       setCookieData: function(userInfo) {
          storeUser = userInfo;
@@ -41,8 +50,10 @@ function($http, $rootScope, $cookies) {
 			return storeUser;
 		},
 		clearCookieData: function() {
+         storeCookie = null;
 			storeUser = null;
 			$cookies.remove("user");
+         $cookies.remove("cookie");
 		}
    };
 }]);
