@@ -23,6 +23,7 @@ function($http, $rootScope, $cookies) {
          });
       },
       logout: function() {
+         console.log(cookie);
          return $http.delete("Ssns/" + cookie)
          .then(function() {
             user = null;
