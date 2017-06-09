@@ -12,23 +12,42 @@ app.controller('loginController',
       login.login($scope.user)
       .then(function(user) {
          $rootScope.user = user;
-         // console.log($scope.user);
-         login.setCookieData(JSON.stringify($scope.user));
+         login.setCookieData(JSON.stringify(user));
          $state.go('home');
          window.location.reload();
       })
       .catch(function(err) {
-         // if (err && err.data)
-            // $mdDialog.show($scope, $filter('tagError')(err.data[0], $rootScope),
-            //  "Error");
+         // Display any errors if there are any
+         if (err && err.data) {
+            alert = $mdDialog.alert({
+               title: "Error",
+               textContent: $filter('tagError')(err.data[0]),
+               ok: 'Close'
+            });
+
+            return $mdDialog.show(alert)
+            .finally(function() {
+             alert = undefined;
+           });
+         }
       });
    };
 
    $scope.logout = function() {
       login.logout()
-      // .then(function() {
-      //    return $mdDialog.show($scope, "Logout successful", "Logout");
-      // })
+      .then(function() {
+         // Handling the dialog
+         alert = $mdDialog.alert({
+            title: "Logout",
+            textContent: "Logout successful.",
+            ok: 'Close'
+         });
+
+         return $mdDialog.show(alert)
+         .finally(function() {
+          alert = undefined;
+        });
+      })
       .then(function() {
          login.clearCookieData();
          $state.go('home');

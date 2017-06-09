@@ -15,14 +15,15 @@ function($http, $rootScope, $cookies) {
             return $http.get("Ssns/" + cookie);
          })
          .then(function(response) {
-            return $http.get('/Prss');
+            return $http.get('/Prss/' + response.data.prsId);
          })
          .then(function(response) {
-            user = response.data[0];
-            return response.data[0];
+            user = response.data;
+            return response.data;
          });
       },
       logout: function() {
+         console.log(cookie);
          return $http.delete("Ssns/" + cookie)
          .then(function() {
             user = null;
