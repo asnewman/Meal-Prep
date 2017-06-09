@@ -77,7 +77,8 @@ router.put('/:id', function(req, res) {
 
    async.waterfall([
    function (cb) {
-      if (vld.chain(req.params.id === req.session.id.toString(), Tags.noPermission)
+      if (vld.chain(
+       req.params.id === req.session.id.toString(), Tags.noPermission)
        .chain(!body.role, Tags.badValue, ['role'])
        .chain(!body.hasOwnProperty("email"),
        Tags.forbiddenField, ["email"])
@@ -116,16 +117,15 @@ router.delete('/:id', function(req, res) {
 
    async.waterfall([
    function(cb) {
-      console.log(req.params.id === req.session.id.toString());
-      console.log(req.params.id);
-      console.log(req.session.id);
-      if (vld.check(req.params.id === req.session.id.toString(), Tags.noPermission, null, cb)) {
+      if (vld.check(req.params.id === req.session.id.toString(), 
+       Tags.noPermission, null, cb)) {
          req.cnn.collection('User').deleteOne({_id: req.session.id}, cb);
       }
    },
    function (result, cb) {
       if (vld.check(result.deletedCount, Tags.notFound, null, cb)) {
-         req.cnn.collection('Recipe').deleteMany({ownerId: req.session.id}, cb);
+         req.cnn.collection('Recipe').deleteMany(
+          {ownerId: req.session.id}, cb);
       }
    },
    function (result, cb) {
@@ -138,4 +138,176 @@ router.delete('/:id', function(req, res) {
    });
 });
 
+// Ingredients resource
+
+router.get('/:id/Ingr', function(req, res) {
+   var vld = req.validator;
+
+   async.waterfall([
+   function(cb) {
+      if (vld.check(req.session, Tags.noPermission, null, cb)) {
+         req.cnn.collection('Fridge').find({ownerId: req.params.id}, 
+          {ingredient: 1}).toArray(function(err, docs) {
+            if (err) cd(err);
+            cb(err, docs); // no errors
+         })
+      }
+   },
+   function(ingrs, cb) {
+      if (vld.checkPrsOK(req.params.id)) { // makes sure owner
+         res.status(200).json(ingrs);
+      }
+   }],
+   function(err) {
+      if (err) res.status(500).end();
+   });
+});
+
+router.post('/:id/Ingr', function(req, res) {
+   var vld = req.validator;
+
+   async.waterfall([
+   function(cb) {
+      if (vld.check(req.session, Tags.noPermission, null, cb)) {
+         req.cnn.collection('Fridge').findOne({ingredient: req.query.name, 
+          ownerId: req.params.id}, cb);
+      }
+   },
+   function(response, cb) {
+      if (vld.check(!response, Tags.dupIngredient, null, cb)) {
+         req.cnn.collection('Fridge').insertOne({ingredient: req.query.name, 
+          ownerId: req.params.id}, cb);
+      }
+   }],
+   function(err) {
+      if (err) res.status(500).end();
+      else res.status(200).end();
+   });
+})
+
+router.delete('/:id/Ingr/:itemId', function(req, res) {
+   vld = req.validator;
+
+   async.waterfall([
+   function(cb) {
+      if (vld.check(req.session, Tags.noPermission, null, cb)
+       && vld.checkPrsOK()) {
+         req.cnn.collection("Fridge").findOne(
+          {_id: new ObjectId(req.params.itemId), 
+          ownerId: req.params.id}, cb);
+      }
+   },
+   function(response, cb) {
+      if (vld.check(response, Tags.badValue, null, cb)) {
+         req.cnn.collection("Fridge").deleteOne(
+          {_id: new ObjectId(req.params.itemId),
+          ownerId: req.params.id}, cb);
+      }
+   }],
+   function(err) {
+      if (err) res.status(500).end();
+      else res.status(200).end();
+   });
+});
+
+// Recipe resources 
+
+router.get('/:id/Mel', function(req, res) {
+   var vld = req.validator;
+
+   async.waterfall([
+   function(cb) {
+      if(vld.check(req.session, Tags.noPermission, null, cb)
+       && vld.checkPrsOK(req.params.id)) {
+         req.cnn.collection('Recipe').find(
+          {ownerId: req.params.id}).toArray(function(err, docs) {
+            if (err) cb(err);
+            cb(err, docs); // no errors
+         });
+      }
+   },
+   function(rcps, cb) {
+      res.status(200).json(rcps);
+      cb();
+   }],
+   function(err) {
+      if (err) res.status(500).end();
+   });
+});
+
+router.post('/:id/Mel', function(req, res) {
+   var vld = req.validator;
+
+   async.waterfall([
+   function(cb) {
+      if(vld.check(req.session, Tags.noPermission, null, cb) &&
+       vld.hasFields(req.body, ["recipeId", "date"], cb) &&
+       vld.checkPrsOK(req.params.id)) {
+         req.cnn.collection('Recipe').insertOne({recipeId: req.body.recipeId,
+          date: req.body.date, ownerId: req.params.id}, cb);
+      }
+   }],
+   function(err) {
+      if (!err) {
+         res.status(200).end();
+      }
+   });
+});
+
+router.delete('/:id/Mel/:mealId', function(req, res) {
+   var vld = req.validator;
+
+   async.waterfall([
+   function(cb) {
+      if (vld.check(req.session, Tags.noPermission, null, cb)) {
+         req.cnn.collection('Recipe').findOne(
+          {_id: new ObjectId(req.params.mealId)}, cb);
+      }
+   },
+   function(response, cb) {
+      if (vld.check(response, Tags.badValue, null, cb) && 
+       vld.check(response.ownerId == req.params.id, 
+       Tags.noPermission, null, cb) &&
+       vld.checkPrsOK(req.params.id)) {
+         req.cnn.collection('Recipe').deleteOne(
+          {_id: new ObjectId(req.params.mealId)}, cb);
+      }
+   }],
+   function(err) {
+      if (!err) {
+         res.status(200).end();
+      }
+   });
+});
+
 module.exports = router;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
