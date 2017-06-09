@@ -6,5 +6,7 @@ app.controller('homeController', ['$scope', 'login',
 
       if (cookie && user)
          $scope.user = JSON.parse(user);
+         console.log($scope.user);
+      }
    }
 }]);
