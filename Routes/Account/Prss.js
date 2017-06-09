@@ -138,4 +138,108 @@ router.delete('/:id', function(req, res) {
    });
 });
 
+// Ingredients resource
+
+router.get('/:id/Ingr', function(req, res) {
+   var vld = req.validator;
+
+   async.waterfall([
+   function(cb) {
+      if (vld.check(req.session, Tags.noPermission, null, cb)) {
+         req.cnn.collection('Fridge').find({ownerId: req.params.id}, 
+          {ingredient: 1}).toArray(function(err, docs) {
+            if (err) cd(err);
+            cb(err, docs); // no errors
+         })
+      }
+   },
+   function(ingrs, cb) {
+      if (vld.checkPrsOK(req.params.id)) { // makes sure owner
+         res.status(200).json(ingrs);
+      }
+   }],
+   function(err) {
+      if (err) res.status(500).end();
+   });
+});
+
+router.post('/:id/Ingr', function(req, res) {
+   var vld = req.validator;
+
+   async.waterfall([
+   function(cb) {
+      if (vld.check(req.session, Tags.noPermission, null, cb)) {
+         req.cnn.collection('Fridge').findOne({ingredient: req.query.name, 
+          ownerId: req.params.id}, cb);
+      }
+   },
+   function(response, cb) {
+      if (vld.check(!response, Tags.dupIngredient, null, cb)) {
+         req.cnn.collection('Fridge').insertOne({ingredient: req.query.name, 
+          ownerId: req.params.id}, cb);
+      }
+   }],
+   function(err) {
+      if (err) res.status(500).end();
+      else res.status(200).end();
+   });
+})
+
+router.delete('/:id/Ingr/:itemId', function(req, res) {
+   vld = req.validator;
+
+   async.waterfall([
+   function(cb) {
+      if (vld.check(req.session, Tags.noPermission, null, cb)
+       && vld.checkPrsOK()) {
+         console.log("_id: " + req.params.itemId);
+         console.log("ownerId: " + req.params.id);
+         req.cnn.collection("Fridge").findOne({_id: new ObjectId(req.params.itemId), 
+          ownerId: req.params.id}, cb);
+      }
+   },
+   function(response, cb) {
+      console.log(response);
+      if (vld.check(response, Tags.badValue, null, cb)) {
+         req.cnn.collection("Fridge").deleteOne({_id: new ObjectId(req.params.itemId),
+          ownerId: req.params.id}, cb);
+      }
+   }],
+   function(err) {
+      if (err) res.status(500).end();
+      else res.status(200).end();
+   });
+});
+
+
 module.exports = router;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
