@@ -43,7 +43,6 @@ app.use(CnnPool.router);
 
 app.use('/Prss', require('./Routes/Account/Prss.js'));
 app.use('/Ssns', require('./Routes/Account/Ssns.js'));
-app.use('/Rcp', require('./Routes/Recipe/Recipe.js'));
 app.use('/Rat', require('./Routes/Recipe/RecipeRatings.js'));
 app.use('/Proxy', require('./Routes/Proxy/Proxy.js'));
 
