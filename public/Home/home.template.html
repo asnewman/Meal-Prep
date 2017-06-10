@@ -1,6 +1,11 @@
 <div ng-if="!!user" flex layout="row">
   <md-content flex id="content">
-     <md-calendar ng-model="selected-data"></md-calendar>
+     <div style="float:left; padding:10px;">
+        <md-calendar ng-model="selected-date"></md-calendar>
+     </div>
+     <div>
+        <md-card>RECIPES</md-card>
+     </div>
   </md-content>
 </div>
 
