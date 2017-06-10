@@ -45,6 +45,45 @@
        </ul>
 
      </md-toolbar>
+     <div ng-if="!!user" ng-controller="AppCtrl" layout="column" ng-cloak>
+
+        <section layout="row" flex>
+
+          <md-sidenav class="md-sidenav-left" md-component-id="left"
+                      md-disable-backdrop md-whiteframe="4">
+
+            <md-toolbar class="md-theme-indigo">
+              <h1 class="md-toolbar-tools">Navigation</h1>
+            </md-toolbar>
+
+            <md-content layout-margin>
+              <p>
+                This sidenav is not showing any backdrop, where users can click on it, to close the sidenav.
+              </p>
+              <md-button ng-click="toggleLeft()" class="md-accent">
+                Close
+              </md-button>
+            </md-content>
+
+          </md-sidenav>
+
+          <md-content flex layout-padding>
+
+            <div layout="column" layout-align="top left">
+
+              <div>
+                <md-button ng-click="toggleLeft()" class="md-raised">
+                  Navigation
+                </md-button>
+              </div>
+
+            </div>
+
+          </md-content>
+
+        </section>
+
+      </div>
      <ui-view/>
 </body>
 </html>
