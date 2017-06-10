@@ -148,7 +148,7 @@ router.get('/:id/Ingr', function(req, res) {
       if (vld.check(req.session, Tags.noPermission, null, cb)) {
          req.cnn.collection('Fridge').find({ownerId: req.params.id}, 
           {ingredient: 1}).toArray(function(err, docs) {
-            if (err) cd(err);
+            if (err) cb(err);
             cb(err, docs); // no errors
          })
       }
