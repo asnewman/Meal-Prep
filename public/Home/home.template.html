@@ -4,15 +4,17 @@
         <md-calendar ng-model="selectedDate"></md-calendar>
      </div>
      <div>
-        <!-- <div ng-repeat="rcp in rcps"></div> -->
+        <div ng-repeat="rcp in rcps"></div>
      </div>
   </md-content>
 </div>
 
 <div ng-if="!user" flex layout="row">
   <md-content flex id="content">
-     <md-card>
-        HELLO
-     </md-card>
+     <div>
+        <div ng-repeat="rcp in rcps | limitTo: 15">
+           <rcp-summary to-summarize="rcp" user="user"></rcp-summary>
+        </div>
+     </div>
   </md-content>
 </div>
