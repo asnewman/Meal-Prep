@@ -1,5 +1,5 @@
-app.controller('homeController', ['$scope', 'login', '$http', '$state', 'rcps',
- function($scope, login, $http, $state, rcps) {
+app.controller('homeController', ['$scope', 'login', '$http', '$state',
+ function($scope, login, $http, $state) {
    $scope.loadPage = function() {
       var cookie = login.getCookie();
       var user = login.getCookieData();
