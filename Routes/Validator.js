@@ -23,7 +23,8 @@ Validator.Tags = {
    queryFailed: "queryFailed",
    forbiddenField: "forbiddenField",
    oldPwdMismatch: "oldPwdMismatch",
-   dupIngredient: "dupIngredient"
+   dupIngredient: "dupIngredient",
+   dupRating: 'dupRating'
 };
 
 // Check |test|.  If false, add an error with tag and possibly empty array
@@ -73,7 +74,7 @@ Validator.prototype.checkAdmin = function(cb) {
 // Validate that AU is the specified person or is an admin
 Validator.prototype.checkPrsOK = function(prsId, cb) {
    return this.check(this.session &&
-    (this.session.isAdmin() || this.session.id == prsId),
+    (this.session.isAdmin() || this.session.id.toString() === prsId),
     Validator.Tags.noPermission, null, cb);
 };
 

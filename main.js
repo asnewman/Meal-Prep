@@ -28,7 +28,8 @@ app.use(Session.router);
 app.use(function(req, res, next) {
    console.log(req.path);
    if (req.session || (req.method === 'POST' &&
-    (req.path === '/Prss' || req.path === '/Ssns'))) {
+    (req.path === '/Prss' || req.path === '/Ssns')) ||
+    (req.path === '/Proxy/search' || req.path === '/Proxy/get')) {
       req.validator = new Validator(req, res);
       next();
    }
@@ -51,7 +52,8 @@ app.delete('/DB', function(req, res) {
 
    // Callbacks to clear tables
    if (req.validator.checkAdmin())
-   var cbs = ["User", "Recipe", "RecipeRating", 'Fridge'].map(function(tblName) {
+   var cbs = ["User", "Recipe", 'Fridge', 'Comments', 'Likes', 'Dislikes']
+    .map(function(tblName) {
       return function(cb) {
          req.cnn.collection(tblName).remove({}, cb);
       };

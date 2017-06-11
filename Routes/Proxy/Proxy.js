@@ -7,7 +7,6 @@ var request = require('request');
 
 router.get('/search', function(req, res) {
    var query = {'q': req.query.q, 'key': req.query.key};
-   console.log(req.query.key);
    request({url: 'http://food2fork.com/api/search', qs: query},
    function (error, response, body) {
       if (!error && response.statusCode == 200) {
