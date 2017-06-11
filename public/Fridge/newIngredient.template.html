@@ -1,0 +1,11 @@
+<md-dialog aria-label="New Ingredient">
+  <form ng-cloak>
+    <md-dialog-content>
+      <label>Ingredient Name</label>
+      <input type="text" name="name" ng-model="name" placeholder="name" required=""/>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+      <md-button ng-click="answer('add')">Add</md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>
