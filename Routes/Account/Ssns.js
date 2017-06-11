@@ -50,9 +50,8 @@ router.delete('/:cookie', function(req, res, next) {
 router.get('/:cookie', function(req, res, next) {
    var cookie = req.params.cookie;
    var vld = req.validator;
-
    if (vld.check(ssnUtil.sessions[cookie], Tags.notFound) &&
-    vld.checkPrsOK(ssnUtil.sessions[cookie].id)) {
+    vld.checkPrsOK(ssnUtil.sessions[cookie].id.toString())) {
       res.json({cookie: cookie,
                prsId: ssnUtil.sessions[cookie].id,
                loginTime: ssnUtil.sessions[cookie].loginTime});
