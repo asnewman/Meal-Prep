@@ -13,7 +13,7 @@ router.get('/:recipeId', function(req, res) {
    var rId = req.params.recipeId;
    var lkes;
    var dlks;
-   
+
    async.waterfall([
    function(cb) { // getting the amount of likes
       cnn.collection("Likes").find({recipeId: rId}).count(cb);
@@ -48,12 +48,12 @@ router.post('/:recipeId/Cmts', function(req, res) {
    function(cb) {
       if (vld.check(req.session, Tags.noPermission, null, cb)
           && vld.hasFields(req.body, ["comment"]), cb) {
-         cnn.collection("Comments").insertOne({recipeId: rId, 
-          ownerId: req.session.id, comment: req.body.content}, cb);
+         cnn.collection("Comments").insertOne({recipeId: rId,
+          ownerId: req.session.id, comment: req.body.comment}, cb);
       }
    }],
-   function(err) {
-      if (!err) res.status(200).end();
+   function(err, result) {
+      if (!err) res.location(router.baseURL + '/rId/Cmts/' + result.insertedId).end();
       else {
          console.log(err);
          res.status(500).end();
@@ -118,20 +118,19 @@ router.post('/:recipeId/Lkes', function(req, res) {
    async.waterfall([
    function(cb) {
       if (vld.check(req.session, Tags.noPermission, null, cb)) {
-         cnn.collection("Likes").findOne({recipeId: rId, 
+         cnn.collection("Likes").findOne({recipeId: rId,
           ownerId: req.session.id}, cb);
       }
    },
    function(response, cb) {
-      if (vld.check(!response, Tags.badValue, null, cb)) {
-         cnn.collection("Likes").insertOne({recipeId: rId, 
+      if (vld.check(!response, Tags.dupRating, null, cb)) {
+         cnn.collection("Likes").insertOne({recipeId: rId,
           ownerId: req.session.id}, cb);
       }
    }],
-   function(err) {
-      if (!err) res.status(200).end();
+   function(err, result) {
+      if (!err) res.location(router.baseURL + '/rId/Lkes/' + result.insertedId).end();
       else {
-         console.log(err);
          res.status(500).end();
       }
    });
@@ -146,18 +145,18 @@ router.post('/:recipeId/Dlks', function (req, res) {
    async.waterfall([
    function(cb) {
       if (vld.check(req.session, Tags.noPermission, null, cb)) {
-         cnn.collection("Dislikes").findOne({recipeId: rId, 
+         cnn.collection("Dislikes").findOne({recipeId: rId,
           ownerId: req.session.id}, cb);
       }
    },
    function(response, cb) {
-      if (vld.check(!response, Tags.badValue, null, cb)) {
-         cnn.collection("Dislikes").insertOne({recipeId: rId, 
+      if (vld.check(!response, Tags.dupRating, null, cb)) {
+         cnn.collection("Dislikes").insertOne({recipeId: rId,
           ownerId: req.session.id}, cb);
       }
    }],
-   function(err) {
-      if (!err) res.status(200).end();
+   function(err, result) {
+      if (!err) res.location(router.baseURL + '/rId/Dlks/' + result.insertedId).end();
       else {
          console.log(err);
          res.status(500).end();
@@ -180,7 +179,7 @@ router.delete('/:recipeId/Lkes/:lkeId', function(req, res) {
    },
    function(response, cb) {
       if (vld.check(response, Tags.badValue, null, cb)
-       && vld.checkPrsOK(response.ownerId)) {
+       && vld.checkPrsOK(response.ownerId.toString())) {
          cnn.collection("Likes").deleteOne({_id: lId, recipeId: rId}, cb);
       }
    }],
@@ -208,7 +207,7 @@ router.delete('/:recipeId/Dlks/:dlkId', function(req, res) {
    },
    function(response, cb) {
       if (vld.check(response, Tags.badValue, null, cb)
-       && vld.checkPrsOK(response.ownerId)) {
+       && vld.checkPrsOK(response.ownerId.toString())) {
          cnn.collection("Dislikes").deleteOne({_id: dId, recipeId: rId}, cb);
       }
    }],
