@@ -10,16 +10,16 @@ app.config(['$stateProvider', '$urlRouterProvider',
          url: '/',
          templateUrl: 'Home/home.template.html',
          controller: 'homeController',
-         resolve: {
-            rcps: ['$q', '$http', '$stateParams',
-             function($q, $http, $stateParams) {
-                console.log("HELLO");
-                return $http.get("/Proxy/search?key=6c623c76c61436feae669486ad7aabc1")
-                 .then(function(response) {
-                    return response.data;
-                });
-             }]
-         }
+         // resolve: {
+         //    rcps: ['$q', '$http', '$stateParams',
+         //     function($q, $http, $stateParams) {
+         //        console.log("HELLO");
+         //       //  return $http.get("/Proxy/search?key=6c623c76c61436feae669486ad7aabc1")
+         //       //   .then(function(response) {
+         //       //      return response.data;
+         //       //  });
+         //     }]
+         // }
       })
       .state('register', {
          url: '/register',
@@ -30,5 +30,10 @@ app.config(['$stateProvider', '$urlRouterProvider',
           url: '/fridge',
           templateUrl: 'Fridge/fridge.template.html',
           controller: 'fridgeController'
+      })
+      .state('recipe', {
+         url: '/recipe',
+         templateUrl: 'Recipe/recipe.template.html',
+         controller: 'recipeController'
       });
    }]);
