@@ -51,7 +51,8 @@ app.delete('/DB', function(req, res) {
 
    // Callbacks to clear tables
    if (req.validator.checkAdmin())
-   var cbs = ["User", "Recipe", "RecipeRating", 'Fridge'].map(function(tblName) {
+   var cbs = ["User", "Recipe", 'Fridge', 'Comments', 'Likes', 'Dislikes']
+    .map(function(tblName) {
       return function(cb) {
          req.cnn.collection(tblName).remove({}, cb);
       };

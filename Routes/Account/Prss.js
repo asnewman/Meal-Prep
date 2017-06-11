@@ -148,7 +148,7 @@ router.get('/:id/Ingr', function(req, res) {
       if (vld.check(req.session, Tags.noPermission, null, cb)) {
          req.cnn.collection('Fridge').find({ownerId: req.params.id}, 
           {ingredient: 1}).toArray(function(err, docs) {
-            if (err) cd(err);
+            if (err) cb(err);
             cb(err, docs); // no errors
          })
       }
@@ -212,7 +212,7 @@ router.delete('/:id/Ingr/:itemId', function(req, res) {
 
 // Recipe resources 
 
-router.get('/:id/Mel', function(req, res) {
+router.get('/:id/Mels', function(req, res) {
    var vld = req.validator;
 
    async.waterfall([
@@ -235,7 +235,7 @@ router.get('/:id/Mel', function(req, res) {
    });
 });
 
-router.post('/:id/Mel', function(req, res) {
+router.post('/:id/Mels', function(req, res) {
    var vld = req.validator;
 
    async.waterfall([
@@ -254,7 +254,7 @@ router.post('/:id/Mel', function(req, res) {
    });
 });
 
-router.delete('/:id/Mel/:mealId', function(req, res) {
+router.delete('/:id/Mels/:mealId', function(req, res) {
    var vld = req.validator;
 
    async.waterfall([
