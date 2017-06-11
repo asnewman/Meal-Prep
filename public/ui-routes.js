@@ -49,6 +49,11 @@ app.config(['$stateProvider', '$urlRouterProvider',
           templateUrl: 'Fridge/fridge.template.html',
           controller: 'fridgeController',
           resolve: {
+             load: ['$q', '$http', 'cookie',
+             function($q, $http, cookie) {
+                cookie.checkUser();
+             }],
+             
              ingr: ['$q', '$http', '$stateParams', '$rootScope',
              function($q, $http, $stateParams, $rootScope) {
                 var url = '/Prss/' + $rootScope.user._id + '/Ingr';

@@ -47,7 +47,7 @@ app.directive('ingrSummary', [function() {
       },
       template:
        '<span layout="row" layout-align="start center" flex>{{ingredient.ingredient}}'+
-       '<md-button type="button" class="btn"' +
+       '<md-button type="button" class="md-primary md-warn"' +
        'ng-show="user && user.id == cnv.ownerId" ng-click="delIngr({ingr: ingr})">' +
        'Remove' +
        '</md-button><span flex></span>'

@@ -1,6 +1,6 @@
 app.controller('fridgeController',
- ['$scope', '$state', '$http', '$mdDialog', 'ingr', '$rootScope',
-function ($scope, $state, $http, $mdDialog, ingr, $rootScope) {
+ ['$scope', '$state', '$http', '$mdDialog', 'ingr', '$rootScope', "$filter",
+function ($scope, $state, $http, $mdDialog, ingr, $rootScope, $filter) {
 
    $scope.ingr = ingr;
    console.log(JSON.stringify(ingr));
@@ -28,8 +28,18 @@ function ($scope, $state, $http, $mdDialog, ingr, $rootScope) {
       })
 
       .catch(function(err) {
+         // Display any errors if there are any
          if (err && err.data) {
-            console.log(err);
+            alert = $mdDialog.alert({
+               title: "Error",
+               textContent: $filter('tagError')(err.data[0]),
+               ok: 'Close'
+            });
+
+            return $mdDialog.show(alert)
+            .finally(function() {
+             alert = undefined;
+           });
          }
       });
    };

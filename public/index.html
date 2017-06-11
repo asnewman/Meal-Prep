@@ -41,12 +41,6 @@
        </ul>
 
        <ul class="nav navbar-nav user-nav">
-           <li ng-if="!!user" class="md-subhead" style="list-style:none;">
-              <md-button ui-sref="fridge">Fridge</md-button>
-           </li>
-       </ul>
-
-       <ul class="nav navbar-nav user-nav">
           <li ng-if="!!user" class="md-subhead" style="list-style:none;">
             {{user.firstName + " " + user.lastName}}
              <md-button ng-controller="loginController" ng-click="logout()">Logout</md-button>
@@ -55,6 +49,13 @@
 
 
      </md-toolbar>
+     <div>
+        <ul class="nav navbar-nav user-nav">
+           <li ng-if="!!user" class="md-subhead" style="list-style:none;">
+              <md-button ui-sref="fridge" class="md-primary md-raised">Fridge</md-button>
+           </li>
+       </ul>
+     </div>
      <ui-view/>
 </body>
 </html>

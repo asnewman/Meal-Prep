@@ -1,11 +1,18 @@
-<h2>My Ingredients</h2>
-<md-button class="btn btn-primary" type="button" style="margin-top:5px"
- ng-click="newIngr()">
-   New Ingredient
-</md-button>
-<md-list class="list-group">
-   <md-list-item class="list-group-item" ng-repeat="ingredient in ingr">
-      <ingr-summary to-summarize="ingredient" del-ingr="delIngr(ingredient)"
-       user="user"></ingr-summary>
-   </md-list-item>
-</md-list>
+<div>
+   <md-card>
+      <md-card-content>
+         <h2>My Ingredients</h2>
+         <md-list class="list-group">
+            <md-list-item class="list-group-item" ng-repeat="ingredient in ingr">
+               <ingr-summary to-summarize="ingredient" del-ingr="delIngr(ingredient)"
+                user="user"></ingr-summary>
+                <md-divider ng-if="!$last"></md-divider>
+            </md-list-item>
+         </md-list>
+         <md-button class="md-primary md-raised" type="button" style="margin-top:5px"
+          ng-click="newIngr()">
+            New Ingredient
+         </md-button>
+      </md-card-content>
+   </md-card>
+</div>
