@@ -24,6 +24,18 @@ app.config(['$stateProvider', '$urlRouterProvider',
                        return response.data.recipes;
                     });
                 }
+               //  else {
+               //     // Get all ingredients
+               //     return $http.get("/Proxy/search?key=6c623c76c61436feae669486ad7aabc1")
+               //     $http.get('/Prss/' + $rootScope.user._id + '/Ingr')
+               //      .then(function(response) {
+               //         $rootScope.ingredients = response.data;
+               //         return response.data;
+               //      })
+               //      .then(function() {
+                //
+               //      })
+               //  }
              }]
          }
       })
