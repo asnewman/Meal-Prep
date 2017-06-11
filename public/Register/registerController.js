@@ -13,17 +13,19 @@ app.controller('registerController',
             ok: 'Close'
          });
 
-         return $mdDialog.show(alert)
+         $mdDialog.show(alert)
          .finally(function() {
           alert = undefined;
-        });
+         });
 
-        return login.login($scope.user);
+         login.login($scope.user)
+         .then(function(user) {
+            $rootScope.user = user;
+            login.setCookieData(JSON.stringify(user));
+            login.setCookie($rootScope.cookie);
+            $state.go('home');
+         });
       })
-      .then(function(user) {
-         $scope.$parent.user = user;
-         $state.go('home');
-       })
       .catch(function(err) {
          if (err && err.data) {
             alert = $mdDialog.alert({

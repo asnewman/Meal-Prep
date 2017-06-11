@@ -25,6 +25,17 @@ app.filter('tagError', ['errMap', function(errMap, language) {
    };
 }]);
 
+app.directive('rcpSummary', [function() {
+   return {
+      restrict: 'E',
+      scope: {
+         rcp: "=toSummarize",
+         user: "="
+      },
+      templateUrl: "Home/recipeSummary.template.html"
+   };
+}]);
+
 app.controller("AppCtrl", function($scope, $timeout, $mdSidenav, $log) {
     $scope.toggleLeft = buildDelayedToggler('left');
     $scope.toggleRight = buildToggler('right');

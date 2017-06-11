@@ -14,6 +14,7 @@ app.controller('loginController',
          $rootScope.user = user;
          login.setCookieData(JSON.stringify(user));
          login.setCookie($rootScope.cookie);
+
          $state.go('home');
          window.location.reload();
       })

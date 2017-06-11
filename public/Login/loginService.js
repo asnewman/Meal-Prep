@@ -13,6 +13,7 @@ function($http, $rootScope, $cookies) {
 
             cookie = location[location.length - 1];
             $rootScope.cookie = cookie;
+            
             return $http.get("Ssns/" + cookie);
          })
          .then(function(response) {
