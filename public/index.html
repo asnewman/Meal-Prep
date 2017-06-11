@@ -25,6 +25,7 @@
 <script src="Login/loginService.js"></script>
 <script src="Login/loginController.js"></script>
 <script src="Register/registerController.js"></script>
+<script src="Fridge/fridgeController.js"></script>
 <script src="ui-routes.js"></script>
 
 
@@ -38,12 +39,20 @@
              <md-button ui-sref="register">Register</md-button>
           </li>
        </ul>
+
+       <ul class="nav navbar-nav user-nav">
+           <li ng-if="!!user" class="md-subhead" style="list-style:none;">
+              <md-button ui-sref="fridge">Fridge</md-button>
+           </li>
+       </ul>
+
        <ul class="nav navbar-nav user-nav">
           <li ng-if="!!user" class="md-subhead" style="list-style:none;">
             {{user.firstName + " " + user.lastName}}
              <md-button ng-controller="loginController" ng-click="logout()">Logout</md-button>
           </li>
-       </ul>
+      </ul>
+
 
      </md-toolbar>
      <div ng-if="!!user" ng-controller="AppCtrl" layout="column" ng-cloak>

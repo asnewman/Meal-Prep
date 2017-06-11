@@ -27,7 +27,7 @@ router.get('/:id', function(req, res) {
    // Empty email but is not an admin. Should only return self email
    else {
       req.cnn.collection('User').findOne({_id: req.session.id},
-       {id: 1, email: 1, firstName: 1, lastName: 1}, handler);
+       {_id: 1, email: 1, firstName: 1, lastName: 1}, handler);
    }
 });
 
