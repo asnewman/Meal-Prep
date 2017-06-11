@@ -64,6 +64,17 @@ app.config(['$stateProvider', '$urlRouterProvider',
       .state('fridge', {
           url: '/fridge',
           templateUrl: 'Fridge/fridge.template.html',
-          controller: 'fridgeController'
+          controller: 'fridgeController',
+          resolve: {
+             ingr: ['$q', '$http', '$stateParams', '$rootScope',
+             function($q, $http, $stateParams, $rootScope) {
+                var url = '/Prss/' + $rootScope.user._id + '/Ingr';
+                return $http.get(url)
+                .then(function(response) {
+                   console.log(response.data);
+                   return response.data;
+                });
+             }]
+          }
       });
    }]);

@@ -36,6 +36,23 @@ app.directive('rcpSummary', [function() {
    };
 }]);
 
+app.directive('ingrSummary', [function() {
+   return {
+      restrict: 'E',
+      scope: {
+         ingredient: "=toSummarize",
+         user: "=",
+         delIngr: '&',
+      },
+      template:
+       '<span layout="row" layout-align="start center" flex>{{ingredient.ingredient}}'+
+       '<md-button type="button" class="btn"' +
+       'ng-show="user && user.id == cnv.ownerId" ng-click="delIngr({ingr: ingr})">' +
+       'Remove' +
+       '</md-button><span flex></span>'
+   };
+}]);
+
 app.controller("AppCtrl", function($scope, $timeout, $mdSidenav, $log) {
     $scope.toggleLeft = buildDelayedToggler('left');
     $scope.toggleRight = buildToggler('right');
