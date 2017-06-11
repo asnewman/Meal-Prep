@@ -53,15 +53,16 @@ app.config(['$stateProvider', '$urlRouterProvider',
              function($q, $http, cookie) {
                 cookie.checkUser();
              }],
-             
+
              ingr: ['$q', '$http', '$stateParams', '$rootScope',
              function($q, $http, $stateParams, $rootScope) {
-                var url = '/Prss/' + $rootScope.user._id + '/Ingr';
-                return $http.get(url)
-                .then(function(response) {
-                   console.log(response.data);
-                   return response.data;
-                });
+                if (!!$rootScope.user) {
+                   var url = '/Prss/' + $rootScope.user._id + '/Ingr';
+                   return $http.get(url)
+                   .then(function(response) {
+                      return response.data;
+                   });
+                }
              }]
           }
       });

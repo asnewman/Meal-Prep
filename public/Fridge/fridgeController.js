@@ -3,8 +3,6 @@ app.controller('fridgeController',
 function ($scope, $state, $http, $mdDialog, ingr, $rootScope, $filter) {
 
    $scope.ingr = ingr;
-   console.log(JSON.stringify(ingr));
-
    $scope.newIngr = function() {
 
       $mdDialog.show({
