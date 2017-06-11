@@ -25,7 +25,7 @@ app.filter('tagError', ['errMap', function(errMap, language) {
    };
 }]);
 
-app.controller("AppCtrl", function ($scope, $timeout, $mdSidenav, $log) {
+app.controller("AppCtrl", function($scope, $timeout, $mdSidenav, $log) {
     $scope.toggleLeft = buildDelayedToggler('left');
     $scope.toggleRight = buildToggler('right');
     $scope.isOpenRight = function(){

@@ -1,5 +1,5 @@
-app.controller('homeController', ['$scope', 'login', '$http', '$state',
- function($scope, login, $http, $state) {
+app.controller('homeController', ['$scope', 'login', '$http', '$state', 'rcps',
+ function($scope, login, $http, $state, rcps) {
    $scope.loadPage = function() {
       var cookie = login.getCookie();
       var user = login.getCookieData();
@@ -26,8 +26,22 @@ app.controller('homeController', ['$scope', 'login', '$http', '$state',
              })
          })();
       }
-      
+
+      // if ($scope.user) {
+      //    (function() {
+      //       return $http.get("/Proxy/search?key=6c623c76c61436feae669486ad7aabc1")
+      //        .then(function(response){
+      //           $scope.allRecipes = response.data.recipes;
+      //           console.log($scope.allRecipes.length);
+      //           return response.data;
+      //        });
+      //    })();
+      // }
+
+      // force Clear cookies
+      // login.clearCookieData();
+
       if (cookie && user)
          $scope.user = JSON.parse(user);
       }
-   }]);
+}]);
