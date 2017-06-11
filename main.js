@@ -28,7 +28,8 @@ app.use(Session.router);
 app.use(function(req, res, next) {
    console.log(req.path);
    if (req.session || (req.method === 'POST' &&
-    (req.path === '/Prss' || req.path === '/Ssns'))) {
+    (req.path === '/Prss' || req.path === '/Ssns')) ||
+    (req.path === '/Proxy/search' || req.path === '/Proxy/get')) {
       req.validator = new Validator(req, res);
       next();
    }

@@ -117,7 +117,7 @@ router.delete('/:id', function(req, res) {
 
    async.waterfall([
    function(cb) {
-      if (vld.check(req.params.id === req.session.id.toString(), 
+      if (vld.check(req.params.id === req.session.id.toString(),
        Tags.noPermission, null, cb)) {
          req.cnn.collection('User').deleteOne({_id: req.session.id}, cb);
       }
@@ -146,7 +146,7 @@ router.get('/:id/Ingr', function(req, res) {
    async.waterfall([
    function(cb) {
       if (vld.check(req.session, Tags.noPermission, null, cb)) {
-         req.cnn.collection('Fridge').find({ownerId: req.params.id}, 
+         req.cnn.collection('Fridge').find({ownerId: req.params.id},
           {ingredient: 1}).toArray(function(err, docs) {
             if (err) cb(err);
             cb(err, docs); // no errors
@@ -169,19 +169,19 @@ router.post('/:id/Ingr', function(req, res) {
    async.waterfall([
    function(cb) {
       if (vld.check(req.session, Tags.noPermission, null, cb)) {
-         req.cnn.collection('Fridge').findOne({ingredient: req.query.name, 
+         req.cnn.collection('Fridge').findOne({ingredient: req.body.name,
           ownerId: req.params.id}, cb);
       }
    },
    function(response, cb) {
       if (vld.check(!response, Tags.dupIngredient, null, cb)) {
-         req.cnn.collection('Fridge').insertOne({ingredient: req.query.name, 
+         req.cnn.collection('Fridge').insertOne({ingredient: req.body.name,
           ownerId: req.params.id}, cb);
       }
    }],
-   function(err) {
+   function(err, result) {
       if (err) res.status(500).end();
-      else res.status(200).end();
+      else res.location(router.baseURL + '/' + req.session.id + '/Ingr/' + result.insertedId).end();
    });
 })
 
@@ -191,9 +191,9 @@ router.delete('/:id/Ingr/:itemId', function(req, res) {
    async.waterfall([
    function(cb) {
       if (vld.check(req.session, Tags.noPermission, null, cb)
-       && vld.checkPrsOK()) {
+       && vld.checkPrsOK(req.params.id)) {
          req.cnn.collection("Fridge").findOne(
-          {_id: new ObjectId(req.params.itemId), 
+          {_id: new ObjectId(req.params.itemId),
           ownerId: req.params.id}, cb);
       }
    },
@@ -210,7 +210,7 @@ router.delete('/:id/Ingr/:itemId', function(req, res) {
    });
 });
 
-// Recipe resources 
+// Recipe resources
 
 router.get('/:id/Mels', function(req, res) {
    var vld = req.validator;
@@ -237,19 +237,20 @@ router.get('/:id/Mels', function(req, res) {
 
 router.post('/:id/Mels', function(req, res) {
    var vld = req.validator;
-
+   console.log(req.params.id);
+   console.log(req.session.id);
    async.waterfall([
    function(cb) {
       if(vld.check(req.session, Tags.noPermission, null, cb) &&
        vld.hasFields(req.body, ["recipeId", "date"], cb) &&
        vld.checkPrsOK(req.params.id)) {
          req.cnn.collection('Recipe').insertOne({recipeId: req.body.recipeId,
-          date: req.body.date, ownerId: req.params.id}, cb);
+          date: new Date(req.body.date), ownerId: req.params.id}, cb);
       }
    }],
-   function(err) {
+   function(err, result) {
       if (!err) {
-         res.status(200).end();
+         res.location(router.baseURL + '/' + req.session.id + '/Mels/' + result.insertedId).end();
       }
    });
 });
@@ -265,8 +266,8 @@ router.delete('/:id/Mels/:mealId', function(req, res) {
       }
    },
    function(response, cb) {
-      if (vld.check(response, Tags.badValue, null, cb) && 
-       vld.check(response.ownerId == req.params.id, 
+      if (vld.check(response, Tags.badValue, null, cb) &&
+       vld.check(response.ownerId == req.params.id,
        Tags.noPermission, null, cb) &&
        vld.checkPrsOK(req.params.id)) {
          req.cnn.collection('Recipe').deleteOne(
@@ -280,34 +281,32 @@ router.delete('/:id/Mels/:mealId', function(req, res) {
    });
 });
 
+router.put('/:id/Mels/:mealId', function(req, res) {
+   var vld = req.validator;
+
+   async.waterfall([
+   function(cb) {
+      if (vld.check(req.session, Tags.noPermission, null, cb)) {
+         req.cnn.collection('Recipe').findOne(
+          {_id: new ObjectId(req.params.mealId)}, cb);
+      }
+   },
+   function(response, cb) {
+      if (vld.check(response, Tags.notFound, null, cb) &&
+       vld.check(response.ownerId === req.params.id,
+       Tags.noPermission, null, cb) &&
+       vld.checkPrsOK(req.params.id)) {
+         req.cnn.collection('Recipe').updateOne(
+          {_id: new ObjectId(req.params.mealId)}, {$set: req.body}, cb);
+      }
+   }],
+   function(err) {
+      if (!err) {
+         res.status(200).end();
+      }
+   });
+});
+
+
+
 module.exports = router;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
