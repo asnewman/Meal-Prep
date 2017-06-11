@@ -12,6 +12,7 @@
 <div ng-if="!user" flex layout="row">
   <md-content flex id="content">
      <div>
+        <p class="md-display-2">Trending Recipes</p>
         <div ng-repeat="rcp in rcps | limitTo: 15">
            <rcp-summary to-summarize="rcp" user="user"></rcp-summary>
         </div>
