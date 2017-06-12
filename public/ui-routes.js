@@ -11,38 +11,9 @@ app.config(['$stateProvider', '$urlRouterProvider',
          templateUrl: 'Home/home.template.html',
          controller: 'homeController',
          resolve: {
-            load: ['$q', 'login', '$http', '$state', '$rootScope',
-             function($q, login, $http, $state, $rootScope) {
-               var cookie = login.getCookie();
-               var user = login.getCookieData();
-               var loginDate, nowDate;
-
-               // If there is a cookie stored, check if the time has expired
-               // If time is over two hours then clear the cookie
-               if (cookie) {
-                  (function() {
-                     return $http.get("Ssns/" + cookie)
-                      .then(function(response) {
-                         return response.data.loginTime;
-                      })
-                      .then (function(loginTime) {
-                         loginDate = new Date(loginTime);
-                         nowDate = new Date();
-                         // if check the time difference and
-                         // clear cookie info if needed
-                         if ((nowDate.getTime() - loginDate.getTime()) >
-                          (2 * 60 * 60 * 1000)) {
-                             login.clearCookieData();
-                             $state.go('home');
-                             window.location.reload();
-                         }
-                      })
-                  })();
-               }
-               // force Clear cookies
-               // login.clearCookieData();
-               if (cookie && user)
-                  $rootScope.user = JSON.parse(user);
+            load: ['$q', '$http', 'cookie',
+             function($q, $http, cookie) {
+                cookie.checkUser();
             }],
             rcps: ['$q', '$http', '$rootScope',
              function($q, $http, $rootScope) {
@@ -53,6 +24,18 @@ app.config(['$stateProvider', '$urlRouterProvider',
                        return response.data.recipes;
                     });
                 }
+               //  else {
+               //     // Get all ingredients
+               //     return $http.get("/Proxy/search?key=6c623c76c61436feae669486ad7aabc1")
+               //     $http.get('/Prss/' + $rootScope.user._id + '/Ingr')
+               //      .then(function(response) {
+               //         $rootScope.ingredients = response.data;
+               //         return response.data;
+               //      })
+               //      .then(function() {
+                //
+               //      })
+               //  }
              }]
          }
       })
@@ -64,7 +47,24 @@ app.config(['$stateProvider', '$urlRouterProvider',
       .state('fridge', {
           url: '/fridge',
           templateUrl: 'Fridge/fridge.template.html',
-          controller: 'fridgeController'
+          controller: 'fridgeController',
+          resolve: {
+             load: ['$q', '$http', 'cookie',
+             function($q, $http, cookie) {
+                cookie.checkUser();
+             }],
+
+             ingr: ['$q', '$http', '$stateParams', '$rootScope',
+             function($q, $http, $stateParams, $rootScope) {
+                if (!!$rootScope.user) {
+                   var url = '/Prss/' + $rootScope.user._id + '/Ingr';
+                   return $http.get(url)
+                   .then(function(response) {
+                      return response.data;
+                   });
+                }
+             }]
+          }
       })
       .state('recipe', {
          url: '/recipe',

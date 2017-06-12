@@ -1,0 +1,19 @@
+<md-dialog aria-label="New Ingredient">
+   <md-card>
+      <md-toolbar>
+         <div class="md-toolbar-tools">
+            <h2><span>New Ingredient</span></h2>
+         </div>
+      </md-toolbar>
+      <md-card-content>
+         <md-form name="Form">
+            <md-input-container class="md-block">
+               <label>Ingredient Name</label>
+               <input type="text" name="name" ng-model="name" placeholder="Name" required=""/>
+            </md-input-container>
+            <md-dialog-actions layout="row">
+              <md-button ng-click="answer('add')">Add</md-button>
+            </md-dialog-actions>
+         </form>
+      </md-card-content>
+   </md-card>
