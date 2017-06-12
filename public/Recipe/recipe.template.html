@@ -1,0 +1,26 @@
+<h1>{{rTitle}}</h1>
+<md-button class="md-raised" ng-click="liked()">Likes {{likes}}</md-button>
+<md-button class="md-raised" ng-click="disliked()">Dislikes {{dislikes}}
+</md-button>
+<md-button class="md-primary" ng-href="{{link}}"
+ target="_blank"> Link to recipe</md-button>
+<md-list>
+   <h1 class="md-toolbar-tools">
+      Comments
+   </h1>
+   <md-list-item class="md-3-line" ng-repeat="comment in comments">
+      <div class="md-list-item-text">
+         <h5>{{comment.date}}</h5>
+         <h3>{{comment.comment}}</h3>
+      </div>
+   </md-list-item>
+   <md-list-item>
+      <md-input-container style="margin-bottom: 0px;">
+         <label>Add Comment</label>
+         <textarea md-select-on-focus ng-model="newComment"></textarea>
+      </md-input-container>
+   </md-list-item>
+</md-list>
+<div>
+   <md-button type="submit" ng-click="submit()">Submit</md-button>
+</div>

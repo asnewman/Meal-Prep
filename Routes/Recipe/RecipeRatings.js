@@ -3,6 +3,7 @@ var Tags = require('../Validator.js').Tags;
 var router = Express.Router({caseSensitive: true});
 var async = require('async');
 var ObjectId = require('mongodb').ObjectId;
+var dateFormat = require('dateformat');
 
 router.baseURL = '/Rat';
 
@@ -43,13 +44,15 @@ router.post('/:recipeId/Cmts', function(req, res) {
    var vld = req.validator;
    var cnn = req.cnn;
    var rId = req.params.recipeId;
+   var now = new Date();
 
    async.waterfall([
    function(cb) {
       if (vld.check(req.session, Tags.noPermission, null, cb)
           && vld.hasFields(req.body, ["comment"]), cb) {
          cnn.collection("Comments").insertOne({recipeId: rId,
-          ownerId: req.session.id, comment: req.body.comment}, cb);
+          ownerId: req.session.id, comment: req.body.comment,
+          date: dateFormat(now, "dddd, mmmm dS, yyyy")}, cb);
       }
    }],
    function(err, result) {
