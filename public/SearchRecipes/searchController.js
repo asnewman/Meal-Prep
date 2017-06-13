@@ -70,11 +70,9 @@ app.controller('searchController', ['$scope', 'login', '$http', '$state', 'ingr'
       };
       $scope.schedule = function (rcp, date) {
          var meal = {recipeId: rcp.recipe_id, date: date};
-         console.log(meal);
 
          $http.post("Prss/" + $rootScope.user._id + '/Mels', meal)
          .then(function(response) {
-               console.log(response);
          })
          .catch(function(err) {
             if (err && err.data) {
