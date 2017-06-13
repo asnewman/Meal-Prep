@@ -237,14 +237,12 @@ router.get('/:id/Mels', function(req, res) {
 
 router.post('/:id/Mels', function(req, res) {
    var vld = req.validator;
-   console.log(req.params.id);
-   console.log(req.session.id);
    async.waterfall([
    function(cb) {
       if(vld.check(req.session, Tags.noPermission, null, cb) &&
-       vld.hasFields(req.body, ["recipeId", "date"], cb) &&
+       vld.hasFields(req.body, ["recipe", "date"], cb) &&
        vld.checkPrsOK(req.params.id)) {
-         req.cnn.collection('Recipe').insertOne({recipeId: req.body.recipeId,
+         req.cnn.collection('Recipe').insertOne({recipe: req.body.recipe,
           date: new Date(req.body.date), ownerId: req.params.id}, cb);
       }
    }],
