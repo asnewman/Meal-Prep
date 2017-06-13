@@ -57,7 +57,7 @@ app.directive('ingrSummary', [function() {
          delIngr: '&',
       },
       template:
-       '<span layout="row" layout-align="start center" flex>{{ingredient.ingredient}}'+
+       '<span layout="row" layout-align="start center" flex>{{ingredient.name}}'+
        '<div><md-button type="button" class="md-primary md-warn"' +
        'ng-show="user && user.id == cnv.ownerId" ng-click="delIngr({ingr: ingr})">' +
        'Remove' +
