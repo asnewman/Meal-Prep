@@ -3,8 +3,6 @@ app.controller('searchController', ['$scope', 'login', '$http', '$state', 'ingr'
     $scope.ingr = ingr;
 
     $scope.newRecipe = function() {
-
-
       $mdDialog.show({
          controller: DialogController,
          templateUrl: '/SearchRecipes/newRecipe.template.html',
@@ -19,7 +17,7 @@ app.controller('searchController', ['$scope', 'login', '$http', '$state', 'ingr'
                  });
              }]
          }
-      });
+      })
 
       .catch(function(err) {
          // Display any errors if there are any
