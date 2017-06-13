@@ -1,9 +1,9 @@
-<md-card style="width: 700px; height:350; position:relative; float:left; display:block;">
+<md-card style="width: 700px; height:400; position:relative; float:left; display:block;">
    <p class="md-title" style="padding: 0px 10px;">{{rcp.title}}</p>
    <md-button class="md-primary md-raised" ui-sref="recipe({ratId: '{{rcp.recipe_id}}'})" ng-click="modalhide()">See Ratings!</md-button>
    <div>
       <img ng-src="{{rcp.image_url}}" style="padding:10px; height:200px; width:300px;"/>
       <md-datepicker ng-model="date" md-placeholder="Enter date"></md-datepicker>
-      <md-button class="md-primary md-raised" ng-click="schedule(rcp, date)">Schedule</md-button>
+      <md-button class="md-primary md-raised" ng-click="schedule(rcp, date)" ng-disabled="!date">Schedule</md-button>
    </div>
 </md-card>

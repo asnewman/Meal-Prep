@@ -73,6 +73,17 @@ app.controller('searchController', ['$scope', 'login', '$http', '$state', 'ingr'
 
          $http.post("Prss/" + $rootScope.user._id + '/Mels', meal)
          .then(function(response) {
+            console.log(meal);
+            alert = $mdDialog.alert({
+               title: "Schedule Success",
+               textContent: meal.recipe.title + " successfully scheduled!",
+               ok: 'Close'
+            });
+
+            return $mdDialog.show(alert)
+            .finally(function() {
+             alert = undefined;
+            });
          })
          .catch(function(err) {
             if (err && err.data) {
