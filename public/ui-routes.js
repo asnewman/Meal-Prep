@@ -15,10 +15,10 @@ app.config(['$stateProvider', '$urlRouterProvider',
              function($q, $http, cookie) {
                 cookie.checkUser();
             }],
-            rcps: ['$q', '$http', '$rootScope',
-             function($q, $http, $rootScope) {
+            rcps: ['$q', '$http', '$rootScope', 'apiKey',
+             function($q, $http, $rootScope, apiKey) {
                 if (!$rootScope.user) {
-                   return $http.get("/Proxy/search?key=6c623c76c61436feae669486ad7aabc1&sort=t")
+                   return $http.get("/Proxy/search?key=" + apiKey + "&sort=t")
                     .then(function(response) {
                        $rootScope.allRecipes = response.data.recipes;
                        return response.data.recipes;
@@ -87,8 +87,8 @@ app.config(['$stateProvider', '$urlRouterProvider',
                cookie.checkUser();
             }],
 
-            ingr: ['$q', '$http', '$stateParams', '$rootScope',
-            function($q, $http, $stateParams, $rootScope) {
+            ingr: ['$q', '$http', '$stateParams', '$rootScope', 'apiKey',
+            function($q, $http, $stateParams, $rootScope, apiKey) {
                if (!!$rootScope.user) {
                   var url = '/Prss/' + $rootScope.user._id + '/Ingr';
                   return $http.get(url)
@@ -104,26 +104,30 @@ app.config(['$stateProvider', '$urlRouterProvider',
          templateUrl: 'Recipe/recipe.template.html',
          controller: 'recipeController',
          resolve: {
-            recipeData: ['$http', '$rootScope', '$stateParams', function($http, $rootScope, $stateParams) {
-               return $http.get("/Proxy/get?key=6c623c76c61436feae669486ad7aabc1&rId=" + $stateParams.ratId)
+            load: ['$q', '$http', 'cookie',
+            function($q, $http, cookie) {
+               cookie.checkUser();
+            }],
+            recipeData: ['$http', '$rootScope', '$stateParams', 'apiKey', function($http, $rootScope, $stateParams, apiKey) {
+               return $http.get("/Proxy/get?key=" + apiKey +"&rId=" + $stateParams.ratId)
                .then(function(response) {
                   return response.data;
                });
             }],
-            ratingData: ['$http', '$rootScope', '$stateParams', function($http, $rootScope, $stateParams) {
+            ratingData: ['$http', '$rootScope', '$stateParams', 'apiKey', function($http, $rootScope, $stateParams, apiKey) {
                return $http.get("/Rat/" + $stateParams.ratId)
                .then(function(response) {
                   return response.data;
                });
             }],
-            liked : ['$http', '$rootScope', '$stateParams', function($http, $rootScope, $stateParams) {
+            liked : ['$http', '$rootScope', '$stateParams', 'apiKey', function($http, $rootScope, $stateParams, apiKey) {
                return $http.get("/Rat/" + $stateParams.ratId + '/Lkes?ownerId=' + $rootScope.user._id)
                .then(function(response) {
                   console.log(JSON.stringify(response.data));
                   return response.data;
                });
             }],
-            disliked : ['$http', '$rootScope', '$stateParams', function($http, $rootScope, $stateParams) {
+            disliked : ['$http', '$rootScope', '$stateParams', 'apiKey', function($http, $rootScope, $stateParams, apiKey) {
                return $http.get("/Rat/" + $stateParams.ratId + '/Dlks?ownerId=' + $rootScope.user._id)
                .then(function(response) {
                   return response.data;

@@ -1,5 +1,5 @@
-app.controller('searchController', ['$scope', 'login', '$http', '$state', 'ingr', '$mdDialog', '$rootScope',
- function($scope, login, $http, $state, ingr, $mdDialog, $rootScope) {
+app.controller('searchController', ['$scope', 'login', '$http', '$state', 'ingr', '$mdDialog', '$rootScope', 'apiKey',
+ function($scope, login, $http, $state, ingr, $mdDialog, $rootScope, apiKey) {
     $scope.ingr = ingr;
     $scope.selected = [];
 
@@ -34,7 +34,7 @@ app.controller('searchController', ['$scope', 'login', '$http', '$state', 'ingr'
          resolve: {
             rcps: ['$q', '$http', '$rootScope',
              function($q, $http, $rootScope) {
-                return $http.get("/Proxy/search?key=25cf74557af63dac0e5a8a938e9fb182&q=" + searchString)
+                return $http.get("/Proxy/search?key=" + apiKey + "&q=" + searchString)
                  .then(function(response){
                     $rootScope.allRecipes = response.data.recipes;
                     return response.data.recipes;

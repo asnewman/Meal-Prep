@@ -4,6 +4,8 @@ var app = angular.module('mainApp', [
    'ngCookies'
 ]);
 
+app.constant("apiKey", "25cf74557af63dac0e5a8a938e9fb182");
+
 app.constant("errMap", {
    queryFailed: 'Query failed (server problem)',
    noPermission: 'Login lacks permission.',
