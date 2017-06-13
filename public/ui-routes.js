@@ -89,8 +89,35 @@ app.config(['$stateProvider', '$urlRouterProvider',
          }
       })
       .state('recipe', {
-         url: '/recipe',
+         url: '/recipe/:ratId',
          templateUrl: 'Recipe/recipe.template.html',
-         controller: 'recipeController'
+         controller: 'recipeController',
+         resolve: {
+            recipeData: ['$http', '$rootScope', '$stateParams', function($http, $rootScope, $stateParams) {
+               return $http.get("/Proxy/get?key=6c623c76c61436feae669486ad7aabc1&rId=" + $stateParams.ratId)
+               .then(function(response) {
+                  return response.data;
+               });
+            }],
+            ratingData: ['$http', '$rootScope', '$stateParams', function($http, $rootScope, $stateParams) {
+               return $http.get("/Rat/" + $stateParams.ratId)
+               .then(function(response) {
+                  return response.data;
+               });
+            }],
+            liked : ['$http', '$rootScope', '$stateParams', function($http, $rootScope, $stateParams) {
+               return $http.get("/Rat/" + $stateParams.ratId + '/Lkes?ownerId=' + $rootScope.user._id)
+               .then(function(response) {
+                  console.log(JSON.stringify(response.data));
+                  return response.data;
+               });
+            }],
+            disliked : ['$http', '$rootScope', '$stateParams', function($http, $rootScope, $stateParams) {
+               return $http.get("/Rat/" + $stateParams.ratId + '/Dlks?ownerId=' + $rootScope.user._id)
+               .then(function(response) {
+                  return response.data;
+               });
+            }]
+         }
       });
    }]);

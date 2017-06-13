@@ -10,7 +10,7 @@
    </h1>
    <md-list-item class="md-3-line" ng-repeat="comment in comments">
       <div class="md-list-item-text">
-         <h5>{{comment.date}}</h5>
+         <h5>{{comment.date}} Author: {{comment.ownerEmail}}</h5>
          <h3>{{comment.comment}}</h3>
       </div>
    </md-list-item>
