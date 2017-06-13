@@ -39,6 +39,21 @@ app.directive('rcpSummary', [function() {
    };
 }]);
 
+app.directive('mealSummary', [function() {
+   return {
+      restrict: 'E',
+      scope: {
+         meal: "=toSummarize",
+         user: "=",
+         removemeal: "&"
+      },
+      link: function($scope, element, attrs) {
+         $scope.removemeal = $scope.removemeal();
+      },
+      templateUrl: "Home/mealSummary.template.html"
+   };
+}]);
+
 app.directive('rcpInformation', [function() {
    return {
       restrict: 'E',

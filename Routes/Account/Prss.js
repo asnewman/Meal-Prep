@@ -214,13 +214,17 @@ router.delete('/:id/Ingr/:itemId', function(req, res) {
 
 router.get('/:id/Mels', function(req, res) {
    var vld = req.validator;
-
+   var search = {ownerId: req.params.id};
+   if (req.query.date) {
+      search.date = new Date(parseInt(req.query.date));
+   }
+   console.log(search);
    async.waterfall([
    function(cb) {
       if(vld.check(req.session, Tags.noPermission, null, cb)
        && vld.checkPrsOK(req.params.id)) {
          req.cnn.collection('Recipe').find(
-          {ownerId: req.params.id}).toArray(function(err, docs) {
+          search).toArray(function(err, docs) {
             if (err) cb(err);
             cb(err, docs); // no errors
          });

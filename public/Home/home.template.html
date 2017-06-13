@@ -1,13 +1,18 @@
 <div ng-if="!!user" flex layout="row">
-  <md-content flex id="content">
-     <div style="float:left; padding:10px;">
-        <md-calendar ng-model="selectedDate"></md-calendar>
+   <md-content flex id="content">
+      <div style="float:left; padding:10px;">
+         <md-calendar ng-model="selectedDate"></md-calendar>
+         <div padding="50px">
+            <md-button class="md-primary md-raised" ng-click="getAllMeals()">All Meals</md-button>
+            <md-button class="md-primary md-raised" ng-disabled="!selectedDate" ng-click= "getSelectedMeals(selectedDate)">{{selectedDate | date}} Meals</md-button>
+         </div>
      </div>
      <md-card style="padding:20px;">
         <div>
-           <p class="md-display-1">{{selectedDate}} Meals</p>
-           <div ng-repeat="rcp in rcps | limitTo: 15">
-              <rcp-summary to-summarize="rcp" user="user"></rcp-summary>
+           <p class="md-display-1" ng-if="!!allMeals">All Planned Meals</p>
+           <p class="md-display-1" ng-if="!allMeals">{{selectedDate | date}} Meals</p>
+           <div ng-repeat="meal in meals">
+              <meal-summary to-summarize="meal" user="user" removemeal="removemeal"></meal-summary>
            </div>
         </div>
      </md-card>
