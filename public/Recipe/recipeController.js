@@ -1,6 +1,8 @@
 app.controller('recipeController',
-   ['$scope','$http', '$location', 'recipeData', 'ratingData', 'liked', 'disliked',
-   function($scope, $http, $location, recipeData, ratingData, liked, disliked) {
+   ['$scope','$http', '$location', 'recipeData', 'ratingData',
+    'liked', 'disliked',
+   function($scope, $http, $location, recipeData, ratingData,
+    liked, disliked) {
       var rId = recipeData.recipe.recipe_id; // Getting recipeId from url
       $scope.newComment = "";
       console.log(JSON.stringify(recipeData));
@@ -56,7 +58,8 @@ app.controller('recipeController',
          if (!$scope.userDisliked) {
             $http.post("Rat/" + rId + "/Dlks")
             .then(function(response, ) {
-               $scope.userDisliked = response.headers('Location').split('/')[4];
+               $scope.userDisliked = response.headers('Location')
+                .split('/')[4];
                return $http.get("/Rat/" + rId);
             })
             .then(function(response) {

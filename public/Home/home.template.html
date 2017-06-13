@@ -4,7 +4,8 @@
          <md-calendar ng-model="selectedDate"></md-calendar>
          <div padding="50px">
             <md-button class="md-primary md-raised" ng-click="getAllMeals()">All Meals</md-button>
-            <md-button class="md-primary md-raised" ng-disabled="!selectedDate" ng-click= "getSelectedMeals(selectedDate)">{{selectedDate | date}} Meals</md-button>
+            <md-button class="md-primary md-raised" ng-disabled="!selectedDate"
+             ng-click= "getSelectedMeals(selectedDate)">{{selectedDate | date}} Meals</md-button>
          </div>
      </div>
      <md-card style="padding:20px;">

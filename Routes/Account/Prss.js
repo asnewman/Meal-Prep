@@ -181,7 +181,8 @@ router.post('/:id/Ingr', function(req, res) {
    }],
    function(err, result) {
       if (err) res.status(500).end();
-      else res.location(router.baseURL + '/' + req.session.id + '/Ingr/' + result.insertedId).end();
+      else res.location(router.baseURL + '/' + req.session.id + '/Ingr/'
+       + result.insertedId).end();
    });
 })
 
@@ -252,7 +253,8 @@ router.post('/:id/Mels', function(req, res) {
    }],
    function(err, result) {
       if (!err) {
-         res.location(router.baseURL + '/' + req.session.id + '/Mels/' + result.insertedId).end();
+         res.location(router.baseURL + '/' + req.session.id + '/Mels/'
+          + result.insertedId).end();
       }
    });
 });

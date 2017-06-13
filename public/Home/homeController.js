@@ -1,5 +1,6 @@
-app.controller('homeController', ['$scope', 'login', '$http', '$state', 'rcps', 'meals', '$rootScope',
-function($scope, login, $http, $state, rcps, meals, $rootScope) {
+app.controller('homeController', ['$scope', 'login', '$http', '$state',
+ 'rcps', 'meals', '$rootScope',
+ function($scope, login, $http, $state, rcps, meals, $rootScope) {
    $scope.rcps = rcps;
    $scope.meals = meals;
    $scope.allMeals = true;
@@ -22,7 +23,8 @@ function($scope, login, $http, $state, rcps, meals, $rootScope) {
       $scope.selectedDate = selectedDate;
       $scope.allMeals = false;
       console.log(selectedDate.getTime());
-      $http.get("Prss/" + $rootScope.user._id + "/Mels?date=" + selectedDate.getTime())
+      $http.get("Prss/" + $rootScope.user._id + "/Mels?date=" +
+       selectedDate.getTime())
       .then(function(response) {
          console.log(JSON.stringify(response.data));
          $scope.meals = response.data;

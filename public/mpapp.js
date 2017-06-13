@@ -4,7 +4,7 @@ var app = angular.module('mainApp', [
    'ngCookies'
 ]);
 
-app.constant("apiKey", "25cf74557af63dac0e5a8a938e9fb182");
+app.constant("apiKey", "da9eeba2a2590609b3449229a2af9230");
 
 app.constant("errMap", {
    queryFailed: 'Query failed (server problem)',
@@ -82,10 +82,10 @@ app.directive('ingrSummary', [function() {
          delIngr: '&',
       },
       template:
-       '<span layout="row" layout-align="start center" flex>{{ingredient.name}}'+
-       '<div><md-button type="button" class="md-primary md-warn"' +
-       'ng-show="user && user.id == cnv.ownerId" ng-click="delIngr({ingr: ingr})">' +
-       'Remove' +
-       '</md-button></div><span flex></span>'
+       '<span layout="row" layout-align="start center" ' +
+       'flex>{{ingredient.name}} <div><md-button type="button" '+
+       'class="md-primary md-warn" ng-show="user && user.id == cnv.ownerId" '+
+       'ng-click="delIngr({ingr: ingr})">Remove</md-button>' +
+       '</div><span flex></span>'
    };
 }]);

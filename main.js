@@ -58,7 +58,10 @@ app.delete('/DB', function(req, res) {
          req.cnn.collection(tblName).remove({}, cb);
       };
    });
-   var adminUser = {firstName: 'admin', lastName: 'adminL', password: 'password',
+   var adminUser = {
+    firstName: 'admin',
+    lastName: 'adminL',
+    password: 'password',
     whenRegistered: new Date(), role: 1,
     email: 'admin@mp.com', termsAccepted: true};
 

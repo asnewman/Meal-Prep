@@ -13,7 +13,8 @@ function ($scope, $state, $http, $mdDialog, ingr, $rootScope, $filter) {
 
       .then (function(answer) {
          if (answer) {
-            return $http.post("/Prss/" + $rootScope.user._id + '/Ingr', answer);
+            return $http.post("/Prss/" + $rootScope.user._id +
+             '/Ingr', answer);
          }
       })
 
@@ -64,6 +65,16 @@ function ($scope, $state, $http, $mdDialog, ingr, $rootScope, $filter) {
 
       .catch(function(err) {
          if (err && err.data) {
+            alert = $mdDialog.alert({
+               title: "Error",
+               textContent: $filter('tagError')(err.data[0]),
+               ok: 'Close'
+            });
+
+            return $mdDialog.show(alert)
+            .finally(function() {
+             alert = undefined;
+           });
          }
       });
    };

@@ -57,7 +57,8 @@ router.post('/:recipeId/Cmts', function(req, res) {
       }
    }],
    function(err, result) {
-      if (!err) res.location(router.baseURL + '/rId/Cmts/' + result.insertedId).end();
+      if (!err) res.location(router.baseURL + '/rId/Cmts/'
+       + result.insertedId).end();
       else {
          console.log(err);
          res.status(500).end();
@@ -137,7 +138,8 @@ router.post('/:recipeId/Lkes', function(req, res) {
       }
    }],
    function(err, result) {
-      if (!err) res.location(router.baseURL + '/rId/Lkes/' + result.insertedId).end();
+      if (!err) res.location(router.baseURL + '/rId/Lkes/'
+       + result.insertedId).end();
       else {
          res.status(500).end();
       }
@@ -164,7 +166,8 @@ router.post('/:recipeId/Dlks', function (req, res) {
       }
    }],
    function(err, result) {
-      if (!err) res.location(router.baseURL + '/rId/Dlks/' + result.insertedId).end();
+      if (!err) res.location(router.baseURL + '/rId/Dlks/'
+       + result.insertedId).end();
       else {
          console.log(err);
          res.status(500).end();

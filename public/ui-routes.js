@@ -94,26 +94,33 @@ app.config(['$stateProvider', '$urlRouterProvider',
             function($q, $http, cookie) {
                cookie.checkUser();
             }],
-            recipeData: ['$http', '$rootScope', '$stateParams', 'apiKey', function($http, $rootScope, $stateParams, apiKey) {
-               return $http.get("/Proxy/get?key=" + apiKey +"&rId=" + $stateParams.ratId)
+            recipeData: ['$http', '$rootScope', '$stateParams', 'apiKey',
+             function($http, $rootScope, $stateParams, apiKey) {
+               return $http.get("/Proxy/get?key=" + apiKey +"&rId="
+                + $stateParams.ratId)
                .then(function(response) {
                   return response.data;
                });
             }],
-            ratingData: ['$http', '$rootScope', '$stateParams', 'apiKey', function($http, $rootScope, $stateParams, apiKey) {
+            ratingData: ['$http', '$rootScope', '$stateParams', 'apiKey',
+             function($http, $rootScope, $stateParams, apiKey) {
                return $http.get("/Rat/" + $stateParams.ratId)
                .then(function(response) {
                   return response.data;
                });
             }],
-            liked : ['$http', '$rootScope', '$stateParams', 'apiKey', function($http, $rootScope, $stateParams, apiKey) {
-               return $http.get("/Rat/" + $stateParams.ratId + '/Lkes?ownerId=' + $rootScope.user._id)
+            liked : ['$http', '$rootScope', '$stateParams', 'apiKey',
+             function($http, $rootScope, $stateParams, apiKey) {
+               return $http.get("/Rat/" + $stateParams.ratId + '/Lkes?ownerId='
+                + $rootScope.user._id)
                .then(function(response) {
                   return response.data;
                });
             }],
-            disliked : ['$http', '$rootScope', '$stateParams', 'apiKey', function($http, $rootScope, $stateParams, apiKey) {
-               return $http.get("/Rat/" + $stateParams.ratId + '/Dlks?ownerId=' + $rootScope.user._id)
+            disliked : ['$http', '$rootScope', '$stateParams', 'apiKey',
+             function($http, $rootScope, $stateParams, apiKey) {
+               return $http.get("/Rat/" + $stateParams.ratId + '/Dlks?ownerId='
+                + $rootScope.user._id)
                .then(function(response) {
                   return response.data;
                });
