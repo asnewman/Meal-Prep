@@ -1,5 +1,5 @@
-app.controller('searchController', ['$scope', 'login', '$http', '$state', 'ingr', '$mdDialog',
- function($scope, login, $http, $state, ingr, $mdDialog) {
+app.controller('searchController', ['$scope', 'login', '$http', '$state', 'ingr', '$mdDialog', '$rootScope',
+ function($scope, login, $http, $state, ingr, $mdDialog, $rootScope) {
     $scope.ingr = ingr;
 
     $scope.newRecipe = function() {
@@ -7,6 +7,7 @@ app.controller('searchController', ['$scope', 'login', '$http', '$state', 'ingr'
          controller: DialogController,
          templateUrl: '/SearchRecipes/newRecipe.template.html',
          clickOutsideToClose: true,
+         locals: {userId: $rootScope.user._id},
          resolve: {
             rcps: ['$q', '$http', '$rootScope',
              function($q, $http, $rootScope) {
@@ -36,7 +37,7 @@ app.controller('searchController', ['$scope', 'login', '$http', '$state', 'ingr'
       });
    };
 
-   function DialogController($scope, $mdDialog, rcps) {
+   function DialogController($scope, $mdDialog, rcps, userId, $filter) {
       $scope.rcps = rcps;
       $scope.hide = function() {
          $mdDialog.hide();
@@ -44,10 +45,33 @@ app.controller('searchController', ['$scope', 'login', '$http', '$state', 'ingr'
       $scope.cancel = function() {
           $mdDialog.cancel();
       };
+      $scope.schedule = function (rcp, date) {
+         var meal = {recipeId: rcp.recipe_id, date: date};
+         console.log(meal);
 
+         $http.post("Prss/" + $rootScope.user._id + '/Mels', meal)
+         .then(function(response) {
+               console.log(response);
+         })
+         .catch(function(err) {
+            if (err && err.data) {
+               alert = $mdDialog.alert({
+                  title: "Error",
+                  textContent: $filter('tagError')(err.data[0]),
+                  ok: 'Close'
+               });
+
+               return $mdDialog.show(alert)
+               .finally(function() {
+                alert = undefined;
+              });
+            }
+         });
+      };
       $scope.answer = function(answer) {
          var data = {'name': $scope.name};
          $mdDialog.hide(data);
       };
    }
+
 }]);

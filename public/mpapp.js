@@ -42,8 +42,22 @@ app.directive('rcpInformation', [function() {
       restrict: 'E',
       scope: {
          rcp: "=toInfo",
-         user: "="
+         user: "=",
+         schedule: "&"
       },
+      link: function($scope, element, attrs) {
+         // unwrap the function
+         $scope.schedule = $scope.schedule();
+
+         $scope.data = "data from somewhere";
+         // 
+         // element.bind("click",function() {
+         //     $scope.$apply(function() {
+         //         schedule(rcp, $scope.date);                        // ...or this way
+         //     });
+         // });
+      },
+
       templateUrl: "SearchRecipes/newRecipeSummary.template.html"
    }
 }])
