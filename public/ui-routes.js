@@ -16,38 +16,24 @@ app.config(['$stateProvider', '$urlRouterProvider',
                 cookie.checkUser();
             }],
             rcps: ['$q', '$http', '$rootScope', 'apiKey',
-             function($q, $http, $rootScope, apiKey) {
-                if (!$rootScope.user) {
-                   return $http.get("/Proxy/search?key=" + apiKey + "&sort=t")
-                    .then(function(response) {
-                       $rootScope.allRecipes = response.data.recipes;
-                       return response.data.recipes;
-                    });
-                }
-                else {
-                   console.log("Prss/" + $rootScope.user._id + "/Mels");
-                   var test = $http.get("Prss/" + $rootScope.user._id + "/Mels")
-                    .then(function(response) {
-                       $rootScope.allRecipes = response.data.recipeId;
-                       console.log(response.data.recipeId);
-                       return response.data.recipes;
-                    });
-                }
-
-
-               //  else {
-               //     // Get all ingredients
-               //     return $http.get("/Proxy/search?key=6c623c76c61436feae669486ad7aabc1")
-               //     $http.get('/Prss/' + $rootScope.user._id + '/Ingr')
-               //      .then(function(response) {
-               //         $rootScope.ingredients = response.data;
-               //         return response.data;
-               //      })
-               //      .then(function() {
-                //
-               //      })
-               //  }
-             }]
+            function($q, $http, $rootScope, apiKey) {
+               if (!$rootScope.user) {
+                  return $http.get("/Proxy/search?key=" + apiKey + "&sort=t")
+                  .then(function(response) {
+                     $rootScope.allRecipes = response.data.recipes;
+                     return response.data.recipes;
+                  });
+               }
+            }],
+            meals: ['$q', '$http', '$rootScope', 'apiKey',
+            function($q, $http, $rootScope, apiKey) {
+               if ($rootScope.user) {
+                  return $http.get("Prss/" + $rootScope.user._id + "/Mels")
+                  .then(function(response) {
+                     return response.data;
+                  });
+               }
+            }]
          }
       })
       .state('register', {
@@ -123,7 +109,6 @@ app.config(['$stateProvider', '$urlRouterProvider',
             liked : ['$http', '$rootScope', '$stateParams', 'apiKey', function($http, $rootScope, $stateParams, apiKey) {
                return $http.get("/Rat/" + $stateParams.ratId + '/Lkes?ownerId=' + $rootScope.user._id)
                .then(function(response) {
-                  console.log(JSON.stringify(response.data));
                   return response.data;
                });
             }],
