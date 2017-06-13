@@ -3,7 +3,7 @@ app.controller('searchController', ['$scope', 'login', '$http', '$state', 'ingr'
     $scope.ingr = ingr;
 
     $scope.newRecipe = function() {
-      
+
 
       $mdDialog.show({
          controller: DialogController,
@@ -19,21 +19,7 @@ app.controller('searchController', ['$scope', 'login', '$http', '$state', 'ingr'
                  });
              }]
          }
-      })
-
-      // .then (function(answer) {
-      //    if (answer) {
-      //       return $http.post("/Prss/" + $rootScope.user._id + '/Ingr', answer);
-      //    }
-      // })
-      //
-      // .then(function() {
-      //    return $http.get('/Prss/' + $rootScope.user._id + '/Ingr');
-      // })
-      //
-      // .then(function(rsp) {
-      //    $scope.ingr = rsp.data;
-      // })
+      });
 
       .catch(function(err) {
          // Display any errors if there are any
