@@ -69,7 +69,7 @@ app.controller('searchController', ['$scope', 'login', '$http', '$state', 'ingr'
           $mdDialog.cancel();
       };
       $scope.schedule = function (rcp, date) {
-         var meal = {recipeId: rcp.recipe_id, date: date};
+         var meal = {recipe: rcp, date: date};
 
          $http.post("Prss/" + $rootScope.user._id + '/Mels', meal)
          .then(function(response) {
