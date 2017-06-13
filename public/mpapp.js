@@ -43,12 +43,13 @@ app.directive('rcpInformation', [function() {
       scope: {
          rcp: "=toInfo",
          user: "=",
-         schedule: "&"
+         schedule: "&",
+         modalhide: "&"
       },
       link: function($scope, element, attrs) {
          // unwrap the function
          $scope.schedule = $scope.schedule();
-
+         $scope.modalhide = $scope.modalhide();
       },
 
       templateUrl: "SearchRecipes/newRecipeSummary.template.html"

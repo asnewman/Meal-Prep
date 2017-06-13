@@ -52,7 +52,8 @@ router.post('/:recipeId/Cmts', function(req, res) {
           && vld.hasFields(req.body, ["comment"]), cb) {
          cnn.collection("Comments").insertOne({recipeId: rId,
           ownerId: req.session.id, comment: req.body.comment,
-          date: dateFormat(now, "dddd, mmmm dS, yyyy")}, cb);
+          date: dateFormat(now, "dddd, mmmm dS, yyyy"),
+          ownerEmail: req.session.email}, cb);
       }
    }],
    function(err, result) {
@@ -69,11 +70,15 @@ router.get('/:recipeId/Lkes', function(req, res) {
    var vld = req.validator;
    var cnn = req.cnn;
    var rId = req.params.recipeId;
+   var search = {recipeId: rId};
+   if (req.query.ownerId) {
+      search.ownerId = new ObjectId(req.query.ownerId);
+   }
 
    async.waterfall([
    function(cb) {
       if (vld.check(req.session, Tags.noPermission, null, cb)) {
-         cnn.collection("Likes").find({recipeId: rId})
+         cnn.collection("Likes").find(search)
           .toArray(function(err, docs) {
             if (err) cb(err);
             cb(err, docs); // no errors
