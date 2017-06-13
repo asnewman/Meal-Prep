@@ -1,29 +1,16 @@
-app.controller('recipeController', 
-   ['$scope','$http', '$location',
-   function($scope, $http, $location) {
-      var rId = $location.search().recipeId; // Getting recipeId from url
-      $scope.rTitle; 
-      $scope.comments;
-      $scope.link;
+app.controller('recipeController',
+   ['$scope','$http', '$location', 'recipeData', 'ratingData', 'liked', 'disliked',
+   function($scope, $http, $location, recipeData, ratingData, liked, disliked) {
+      var rId = recipeData.recipe.recipe_id; // Getting recipeId from url
       $scope.newComment = "";
-      $scope.likes;
-      $scope.dislikes;
-      
-      // Getting recipe title and link
-      $http.get("/Proxy/get?key=6c623c76c61436feae669486ad7aabc1&rId=" + rId)
-       .then(function(response) {
-         $scope.rTitle = response.data.recipe.title;
-         $scope.link = response.data.recipe.source_url;
-         console.log($scope.link);
-      });
-      
-      // Getting recipe comments, likes, and dislikes
-      $http.get("/Rat/" + rId)
-       .then(function(response) {
-         $scope.likes = response.data.likes;
-         $scope.dislikes = response.data.dislikes;
-         $scope.comments = response.data.comments;
-      });
+      console.log(JSON.stringify(recipeData));
+      $scope.rTitle = recipeData.recipe.title;
+      $scope.link = recipeData.recipe.source_url;
+      $scope.likes = ratingData.likes;
+      $scope.dislikes = ratingData.dislikes;
+      $scope.comments = ratingData.comments;
+      $scope.userLiked = liked && liked[0] && liked[0]._id;
+      $scope.userDisliked = disliked && disliked[0] && disliked[0]._id;
 
       // Submitting a new comment
       $scope.submit = function() {
@@ -38,42 +25,57 @@ app.controller('recipeController',
       };
 
       $scope.liked = function() {
-         $http.post("Rat/" + rId + "/Lkes")
-          .then(function() {
-            return $http.get("/Rat/" + rId);
-         })
-          .then(function(response) {
-            $scope.likes = response.data.likes;     
-         })
-          .catch(function(err) {
-            console.log(err);
-         });
+         if (!$scope.userLiked) {
+            $http.post("Rat/" + rId + "/Lkes")
+            .then(function(response) {
+               console.log(response.headers('Location'));
+               $scope.userLiked = response.headers('Location').split('/')[4];
+               return $http.get("/Rat/" + rId);
+            })
+            .then(function(response) {
+               $scope.likes = response.data.likes;
+            })
+            .catch(function(err) {
+               console.log(JSON.stringify(err));
+            });
+         }
+         else {
+            $http.delete("Rat/" + rId + "/Lkes/" + $scope.userLiked)
+            .then(function() {
+               $scope.userLiked = false;
+               return $http.get("/Rat/" + rId);
+            })
+            .then(function(response) {
+               $scope.likes = response.data.likes;
+            });
+         }
+
       };
 
       $scope.disliked = function() {
-         $http.post("Rat/" + rId + "/Dlks")
-          .then(function() {
-            return $http.get("/Rat/" + rId);
-         })
-          .then(function(response) {
-            $scope.dislikes = response.data.dislikes;     
-         })
-          .catch(function(err) {
-            console.log(err);
-         });
+         if (!$scope.userDisliked) {
+            $http.post("Rat/" + rId + "/Dlks")
+            .then(function(response, ) {
+               $scope.userDisliked = response.headers('Location').split('/')[4];
+               return $http.get("/Rat/" + rId);
+            })
+            .then(function(response) {
+               $scope.dislikes = response.data.dislikes;
+            })
+            .catch(function(err) {
+
+            });
+         }
+         else {
+            $http.delete("Rat/" + rId + "/Dlks/" + $scope.userDisliked)
+            .then(function() {
+               $scope.userDisliked = false;
+               return $http.get("/Rat/" + rId);
+            })
+            .then(function(response) {
+               $scope.dislikes = response.data.dislikes;
+            });
+         }
       };
    }
 ]);
-
-
-
-
-
-
-
-
-
-
-
-
-
