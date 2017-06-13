@@ -8,7 +8,7 @@
                 <legend>Available Ingredients</legend>
                 <div layout="row" layout-wrap flex>
                   <div flex="50" ng-repeat="ingredient in ingr">
-                    <md-checkbox>
+                    <md-checkbox ng-checked="exists(ingredient, selected)" ng-click="toggle(ingredient, selected)">
                       {{ ingredient.name }}
                     </md-checkbox>
                   </div>
