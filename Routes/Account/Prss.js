@@ -147,7 +147,7 @@ router.get('/:id/Ingr', function(req, res) {
    function(cb) {
       if (vld.check(req.session, Tags.noPermission, null, cb)) {
          req.cnn.collection('Fridge').find({ownerId: req.params.id},
-          {ingredient: 1}).toArray(function(err, docs) {
+          {name: 1, _id: 1}).toArray(function(err, docs) {
             if (err) cb(err);
             cb(err, docs); // no errors
          })
@@ -169,13 +169,13 @@ router.post('/:id/Ingr', function(req, res) {
    async.waterfall([
    function(cb) {
       if (vld.check(req.session, Tags.noPermission, null, cb)) {
-         req.cnn.collection('Fridge').findOne({ingredient: req.body.name,
+         req.cnn.collection('Fridge').findOne({name: req.body.name,
           ownerId: req.params.id}, cb);
       }
    },
    function(response, cb) {
       if (vld.check(!response, Tags.dupIngredient, null, cb)) {
-         req.cnn.collection('Fridge').insertOne({ingredient: req.body.name,
+         req.cnn.collection('Fridge').insertOne({name: req.body.name,
           ownerId: req.params.id}, cb);
       }
    }],
