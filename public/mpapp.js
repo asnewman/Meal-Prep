@@ -49,13 +49,6 @@ app.directive('rcpInformation', [function() {
          // unwrap the function
          $scope.schedule = $scope.schedule();
 
-         $scope.data = "data from somewhere";
-         // 
-         // element.bind("click",function() {
-         //     $scope.$apply(function() {
-         //         schedule(rcp, $scope.date);                        // ...or this way
-         //     });
-         // });
       },
 
       templateUrl: "SearchRecipes/newRecipeSummary.template.html"
