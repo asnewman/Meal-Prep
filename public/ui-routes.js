@@ -19,11 +19,22 @@ app.config(['$stateProvider', '$urlRouterProvider',
              function($q, $http, $rootScope) {
                 if (!$rootScope.user) {
                    return $http.get("/Proxy/search?key=6c623c76c61436feae669486ad7aabc1&sort=t")
-                    .then(function(response){
+                    .then(function(response) {
                        $rootScope.allRecipes = response.data.recipes;
                        return response.data.recipes;
                     });
                 }
+                else {
+                   console.log("Prss/" + $rootScope.user._id + "/Mels");
+                   var test = $http.get("Prss/" + $rootScope.user._id + "/Mels")
+                    .then(function(response) {
+                       $rootScope.allRecipes = response.data.recipeId;
+                       console.log(response.data.recipeId);
+                       return response.data.recipes;
+                    });
+                }
+
+
                //  else {
                //     // Get all ingredients
                //     return $http.get("/Proxy/search?key=6c623c76c61436feae669486ad7aabc1")
