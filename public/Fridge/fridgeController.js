@@ -55,6 +55,7 @@ function ($scope, $state, $http, $mdDialog, ingr, $rootScope, $filter) {
          $mdDialog.hide(data);
       };
    }
+   
    $scope.delIngr = function(ingr) {
       $http.delete('/Prss/' + $rootScope.user._id + '/Ingr/' + ingr._id)
       .then(function(rsp) {

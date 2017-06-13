@@ -27,6 +27,7 @@
 <script src="Register/registerController.js"></script>
 <script src="Recipe/recipeController.js"></script>
 <script src="Fridge/fridgeController.js"></script>
+<script src="SearchRecipes/searchController.js"></script>
 <script src="ui-routes.js"></script>
 
 
@@ -54,6 +55,7 @@
         <ul class="nav navbar-nav user-nav">
            <li ng-if="!!user" class="md-subhead" style="list-style:none;">
               <md-button ui-sref="fridge" class="md-primary md-raised">Fridge</md-button>
+              <md-button ui-sref="searchRecipes" class="md-primary md-raised">Search Recipes</md-button>
            </li>
        </ul>
      </div>

@@ -1,0 +1,22 @@
+<div>
+   <md-card>
+      <md-card-content>
+         <h1>Search Recipes</h1>
+         <div flex="100" flex-gt-sm="50" layout="column">
+            <div>
+              <fieldset class="standard">
+                <legend>Available Ingredients</legend>
+                <div layout="row" layout-wrap flex>
+                  <div flex="50" ng-repeat="ingredient in ingr">
+                    <md-checkbox>
+                      {{ ingredient.ingredient }}
+                    </md-checkbox>
+                  </div>
+                </div>
+                <md-button class="md-primary md-raised" ng-click="newRecipe()">Search</md-button>
+              </fieldset>
+            </div>
+          </div>
+      </md-card-content>
+   </md-card>
+</div>

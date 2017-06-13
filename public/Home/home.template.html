@@ -3,11 +3,14 @@
      <div style="float:left; padding:10px;">
         <md-calendar ng-model="selectedDate"></md-calendar>
      </div>
-     <div>
-        <div ng-repeat="rcp in rcps | limitTo: 15">
-           <rcp-summary to-summarize="rcp" user="user"></rcp-summary>
+     <md-card style="padding:20px;">
+        <div>
+           <p class="md-display-1">{{selectedDate}} Meals</p>
+           <!-- <div ng-repeat="rcp in rcps | limitTo: 15">
+              <rcp-summary to-summarize="rcp" user="user"></rcp-summary>
+           </div> -->
         </div>
-     </div>
+     </md-card>
   </md-content>
 </div>
 

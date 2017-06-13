@@ -66,6 +66,28 @@ app.config(['$stateProvider', '$urlRouterProvider',
              }]
           }
       })
+      .state('searchRecipes', {
+         url: '/searchRecipes',
+         templateUrl: 'SearchRecipes/searchRecipes.template.html',
+         controller: 'searchController',
+         resolve: {
+            load: ['$q', '$http', 'cookie',
+            function($q, $http, cookie) {
+               cookie.checkUser();
+            }],
+
+            ingr: ['$q', '$http', '$stateParams', '$rootScope',
+            function($q, $http, $stateParams, $rootScope) {
+               if (!!$rootScope.user) {
+                  var url = '/Prss/' + $rootScope.user._id + '/Ingr';
+                  return $http.get(url)
+                  .then(function(response) {
+                     return response.data;
+                  });
+               }
+            }]
+         }
+      })
       .state('recipe', {
          url: '/recipe',
          templateUrl: 'Recipe/recipe.template.html',

@@ -37,6 +37,17 @@ app.directive('rcpSummary', [function() {
    };
 }]);
 
+app.directive('rcpInformation', [function() {
+   return {
+      restrict: 'E',
+      scope: {
+         rcp: "=toInfo",
+         user: "="
+      },
+      templateUrl: "SearchRecipes/newRecipeSummary.template.html"
+   }
+}])
+
 app.directive('ingrSummary', [function() {
    return {
       restrict: 'E',
