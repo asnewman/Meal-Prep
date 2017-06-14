@@ -757,7 +757,7 @@
 			"tests": "var jsonResponse = responseBody && JSON.parse(responseBody);\n\ntests[\"Status code is 200\"] = responseCode && responseCode.code === 200;\ntests[\"correct content\"] = jsonResponse && jsonResponse.likes === 1 && jsonResponse.dislikes === 1 && jsonResponse.comments.length === 3\n\n\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1497147536084,
+			"time": 1497393212084,
 			"name": "Verify Ratings",
 			"description": "",
 			"collectionId": "8b3b7e8a-4465-e00a-df03-ef8f7032e6fb",
@@ -885,21 +885,31 @@
 		{
 			"id": "512ad829-d063-8418-71bc-e32b9451e696",
 			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
 			"url": "{{url}}/Prss/{{A_ID}}/Mels",
+			"queryParams": [],
 			"preRequestScript": null,
 			"pathVariables": {},
+			"pathVariableData": [],
 			"method": "POST",
 			"data": [],
 			"dataMode": "raw",
 			"tests": "var loc = postman.getResponseHeader(\"Location\");\n\ntests[\"Status code is 200\"] = responseCode && responseCode.code === 200;\ntests[\"Empty Body\"] = responseBody === \"\";\npostman.setEnvironmentVariable(\"pear_meal\", loc.split('/')[4]);\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1497144114435,
+			"time": 1497392851186,
 			"name": "Post Pear pie meal with Login",
 			"description": "",
 			"collectionId": "8b3b7e8a-4465-e00a-df03-ef8f7032e6fb",
 			"responses": [],
-			"rawModeData": "{\"recipeId\": \"EFFFDAE\", \n \"date\": {{mel1_date}}\n}"
+			"rawModeData": "{\"recipe\": {\"publisher\": \"Closet Cooking\", \"f2f_url\": \"http://food2fork.com/view/35171\", \"ingredients\": [\"1/4 cup cooked shredded chicken, warm\", \"1 tablespoon hot sauce\", \"1/2 tablespoon mayo (optional)\", \"1 tablespoon carrot, grated\", \"1 tablespoon celery, sliced\", \"1 tablespoon green or red onion, sliced or diced\", \"1 tablespoon blue cheese, room temperature, crumbled\", \"1/2 cup cheddar cheese, room temperature, grated\", \"2 slices bread\", \"1 tablespoon butter, room temperature\\n\"], \"source_url\": \"http://www.closetcooking.com/2011/08/buffalo-chicken-grilled-cheese-sandwich.html\", \"recipe_id\": \"35171\", \"image_url\": \"http://static.food2fork.com/Buffalo2BChicken2BGrilled2BCheese2BSandwich2B5002B4983f2702fe4.jpg\", \"social_rank\": 100.0, \"publisher_url\": \"http://closetcooking.com\", \"title\": \"Buffalo Chicken Grilled Cheese Sandwich\"}, \n \"date\": {{mel1_date}}\n}"
 		},
 		{
 			"id": "530510ab-0e77-85d1-0067-5f36d9d4cc95",
@@ -1187,21 +1197,31 @@
 		{
 			"id": "78325066-c901-de78-fea7-5aa1482b2a49",
 			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
 			"url": "{{url}}/Prss/{{A_ID}}/Mels",
+			"queryParams": [],
 			"preRequestScript": null,
 			"pathVariables": {},
+			"pathVariableData": [],
 			"method": "POST",
 			"data": [],
 			"dataMode": "raw",
 			"tests": "var loc = postman.getResponseHeader(\"Location\");\n\ntests[\"Status code is 200\"] = responseCode && responseCode.code === 200;\ntests[\"Empty Body\"] = responseBody === \"\";\npostman.setEnvironmentVariable(\"apple_meal\", loc.split('/')[4]);\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1497144889522,
+			"time": 1497392807894,
 			"name": "Post apple pie meal with Login",
 			"description": "",
 			"collectionId": "8b3b7e8a-4465-e00a-df03-ef8f7032e6fb",
 			"responses": [],
-			"rawModeData": "{\"recipeId\": \"EFHSYE\", \"date\": {{mel1_date}}}"
+			"rawModeData": "{\"recipe\": {\"publisher\": \"Closet Cooking\", \"f2f_url\": \"http://food2fork.com/view/35171\", \"ingredients\": [\"1/4 cup cooked shredded chicken, warm\", \"1 tablespoon hot sauce\", \"1/2 tablespoon mayo (optional)\", \"1 tablespoon carrot, grated\", \"1 tablespoon celery, sliced\", \"1 tablespoon green or red onion, sliced or diced\", \"1 tablespoon blue cheese, room temperature, crumbled\", \"1/2 cup cheddar cheese, room temperature, grated\", \"2 slices bread\", \"1 tablespoon butter, room temperature\\n\"], \"source_url\": \"http://www.closetcooking.com/2011/08/buffalo-chicken-grilled-cheese-sandwich.html\", \"recipe_id\": \"35171\", \"image_url\": \"http://static.food2fork.com/Buffalo2BChicken2BGrilled2BCheese2BSandwich2B5002B4983f2702fe4.jpg\", \"social_rank\": 100.0, \"publisher_url\": \"http://closetcooking.com\", \"title\": \"Buffalo Chicken Grilled Cheese Sandwich\"}, \"date\": {{mel1_date}}}"
 		},
 		{
 			"id": "7f9e5c93-c76b-8f8a-50c9-c53cce362165",
@@ -1291,12 +1311,12 @@
 			"tests": "tests[\"Status code is 200\"] = responseCode && responseCode.code === 200;\ntests[\"Empty Body\"] = responseBody === \"\";\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1497145494832,
+			"time": 1497392876489,
 			"name": "Change watermelon pie meal with Login",
 			"description": "",
 			"collectionId": "8b3b7e8a-4465-e00a-df03-ef8f7032e6fb",
 			"responses": [],
-			"rawModeData": "{\"recipeId\": \"CHANGE\", \"date\": {{mel1_date}}}"
+			"rawModeData": "{\"recipe\": {\"publisher\": \"Closet Cooking\", \"f2f_url\": \"http://food2fork.com/view/35171\", \"ingredients\": [\"1/4 cup cooked shredded chicken, warm\", \"1 tablespoon hot sauce\", \"1/2 tablespoon mayo (optional)\", \"1 tablespoon carrot, grated\", \"1 tablespoon celery, sliced\", \"1 tablespoon green or red onion, sliced or diced\", \"1 tablespoon blue cheese, room temperature, crumbled\", \"1/2 cup cheddar cheese, room temperature, grated\", \"2 slices bread\", \"1 tablespoon butter, room temperature\\n\"], \"source_url\": \"http://www.closetcooking.com/2011/08/buffalo-chicken-grilled-cheese-sandwich.html\", \"recipe_id\": \"35171\", \"image_url\": \"http://static.food2fork.com/Buffalo2BChicken2BGrilled2BCheese2BSandwich2B5002B4983f2702fe4.jpg\", \"social_rank\": 100.0, \"publisher_url\": \"http://closetcooking.com\", \"title\": \"Buffalo Chicken Grilled Cheese Sandwich\"}, \"date\": {{mel1_date}}}"
 		},
 		{
 			"id": "8c9df32e-c145-ff02-be8c-a4d3580adede",
@@ -1320,12 +1340,12 @@
 			"tests": "var loc = postman.getResponseHeader(\"Location\");\n\ntests[\"Status code is 200\"] = responseCode && responseCode.code === 200;\ntests[\"Empty Body\"] = responseBody === \"\";\npostman.setEnvironmentVariable(\"watermelon_meal\", loc.split('/')[4]);\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1497145770766,
+			"time": 1497392867533,
 			"name": "Post watermelon pie meal with Login",
 			"description": "",
 			"collectionId": "8b3b7e8a-4465-e00a-df03-ef8f7032e6fb",
 			"responses": [],
-			"rawModeData": "{\"recipeId\": \"EIFMSOE\", \"date\": {{mel1_date}}}"
+			"rawModeData": "{\"recipe\": {\"publisher\": \"Closet Cooking\", \"f2f_url\": \"http://food2fork.com/view/35171\", \"ingredients\": [\"1/4 cup cooked shredded chicken, warm\", \"1 tablespoon hot sauce\", \"1/2 tablespoon mayo (optional)\", \"1 tablespoon carrot, grated\", \"1 tablespoon celery, sliced\", \"1 tablespoon green or red onion, sliced or diced\", \"1 tablespoon blue cheese, room temperature, crumbled\", \"1/2 cup cheddar cheese, room temperature, grated\", \"2 slices bread\", \"1 tablespoon butter, room temperature\\n\"], \"source_url\": \"http://www.closetcooking.com/2011/08/buffalo-chicken-grilled-cheese-sandwich.html\", \"recipe_id\": \"35171\", \"image_url\": \"http://static.food2fork.com/Buffalo2BChicken2BGrilled2BCheese2BSandwich2B5002B4983f2702fe4.jpg\", \"social_rank\": 100.0, \"publisher_url\": \"http://closetcooking.com\", \"title\": \"Buffalo Chicken Grilled Cheese Sandwich\"}, \"date\": {{mel1_date}}}"
 		},
 		{
 			"id": "935749b5-8305-3a17-18cc-fc638424e788",
@@ -1612,10 +1632,10 @@
 			"method": "GET",
 			"data": null,
 			"dataMode": "params",
-			"tests": "var jsonResponse = responseBody && JSON.parse(responseBody);\n\ntests[\"Status code is 200\"] = responseCode && responseCode.code === 200;\ntests[\"Contains apple pie\"] = jsonResponse && jsonResponse.length === 2 && responseBody.indexOf(\"EFHSYE\") !== -1 && responseBody.indexOf(postman.getEnvironmentVariable(\"apple_meal\"));\ntests[\"Contains pear pie\"] = jsonResponse && jsonResponse.length === 2 && responseBody.indexOf(\"CHANGE\") !== -1 && responseBody.indexOf(postman.getEnvironmentVariable(\"watermelon_meal\"))\n\n\n\n",
+			"tests": "var jsonResponse = responseBody && JSON.parse(responseBody);\n\ntests[\"Status code is 200\"] = responseCode && responseCode.code === 200;\ntests[\"Contains apple pie\"] = jsonResponse && jsonResponse.length === 2\ntests[\"Contains pear pie\"] = jsonResponse && jsonResponse.length === 2\n\n\n",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1497146420052,
+			"time": 1497392896363,
 			"name": "Verify Ingr",
 			"description": "",
 			"collectionId": "8b3b7e8a-4465-e00a-df03-ef8f7032e6fb",

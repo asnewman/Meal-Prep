@@ -99,11 +99,17 @@ router.get('/:recipeId/Dlks', function(req, res) {
    var vld = req.validator;
    var cnn = req.cnn;
    var rId = req.params.recipeId;
+   var search = {recipeId: rId};
+
+   if (req.query.ownerId) {
+      search.ownerId = new ObjectId(req.query.ownerId);
+   }
+
 
    async.waterfall([
    function(cb) {
       if (vld.check(req.session, Tags.noPermission, null, cb)) {
-         cnn.collection("Dislikes").find({recipeId: rId})
+         cnn.collection("Dislikes").find(search)
           .toArray(function(err, docs) {
             if (err) cb(err);
             cb(err, docs); // no errors

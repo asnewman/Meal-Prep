@@ -55,8 +55,9 @@ function($scope, $state, login, $filter, $rootScope, $mdDialog) {
 
       .then(function() {
          login.clearCookieData();
-         $state.go('home');
+         $state.go('home', {}, {reload: true});
          window.location.reload();
+
       })
 
       .catch(function() {
