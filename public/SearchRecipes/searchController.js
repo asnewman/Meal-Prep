@@ -1,25 +1,26 @@
 app.controller('searchController', ['$scope', 'login', '$http', '$state',
  'ingr', '$mdDialog', '$rootScope', 'apiKey',
- function($scope, login, $http, $state, ingr, $mdDialog, $rootScope, apiKey) {
-    $scope.ingr = ingr;
-    $scope.selected = [];
+function($scope, login, $http, $state, ingr, $mdDialog, $rootScope, apiKey) {
+   $scope.ingr = ingr;
+   $scope.selected = [];
 
-    $scope.toggle = function (item, list) {
-        var idx = list.indexOf(item);
-        if (idx > -1) {
-          list.splice(idx, 1);
-        }
-        else {
-          list.push(item);
-        }
+   $scope.toggle = function (item, list) {
+      var idx = list.indexOf(item);
+
+      if (idx > -1) {
+         list.splice(idx, 1);
+      }
+      else {
+         list.push(item);
+      }
     };
-
-    $scope.exists = function (item, list) {
+   $scope.exists = function (item, list) {
       return list.indexOf(item) > -1;
-    };
+   };
 
-    $scope.newRecipe = function() {
+   $scope.newRecipe = function() {
       var searchString = "";
+
       $scope.selected.forEach(function(item, idx, list) {
          if (idx === list.length - 1)
             searchString += item.name;
@@ -34,14 +35,14 @@ app.controller('searchController', ['$scope', 'login', '$http', '$state',
          locals: {userId: $rootScope.user._id},
          resolve: {
             rcps: ['$q', '$http', '$rootScope',
-             function($q, $http, $rootScope) {
-                return $http.get("/Proxy/search?key=" + apiKey + "&q="
-                 + searchString)
-                 .then(function(response){
-                    $rootScope.allRecipes = response.data.recipes;
-                    return response.data.recipes;
-                 });
-             }]
+            function($q, $http, $rootScope) {
+               return $http.get("/Proxy/search?key=" + apiKey + "&q="
+                + searchString)
+               .then(function(response){
+                  $rootScope.allRecipes = response.data.recipes;
+                  return response.data.recipes;
+               });
+            }]
          }
       })
 
@@ -56,7 +57,7 @@ app.controller('searchController', ['$scope', 'login', '$http', '$state',
 
             return $mdDialog.show(alert)
             .finally(function() {
-             alert = undefined;
+               alert = undefined;
            });
          }
       });
@@ -67,9 +68,11 @@ app.controller('searchController', ['$scope', 'login', '$http', '$state',
       $scope.hide = function() {
          $mdDialog.hide();
       };
+
       $scope.cancel = function() {
           $mdDialog.cancel();
       };
+
       $scope.schedule = function (rcp, date) {
          var meal = {recipe: rcp, date: date};
 
@@ -84,9 +87,10 @@ app.controller('searchController', ['$scope', 'login', '$http', '$state',
 
             return $mdDialog.show(alert)
             .finally(function() {
-             alert = undefined;
+               alert = undefined;
             });
          })
+
          .catch(function(err) {
             if (err && err.data) {
                alert = $mdDialog.alert({
@@ -97,15 +101,15 @@ app.controller('searchController', ['$scope', 'login', '$http', '$state',
 
                return $mdDialog.show(alert)
                .finally(function() {
-                alert = undefined;
+                  alert = undefined;
               });
-            }
+           }
          });
       };
+
       $scope.answer = function(answer) {
          var data = {'name': $scope.name};
          $mdDialog.hide(data);
       };
    }
-
 }]);

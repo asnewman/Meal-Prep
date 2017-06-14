@@ -1,6 +1,6 @@
 app.controller('homeController', ['$scope', 'login', '$http', '$state',
  'rcps', 'meals', '$rootScope',
- function($scope, login, $http, $state, rcps, meals, $rootScope) {
+function($scope, login, $http, $state, rcps, meals, $rootScope) {
    $scope.rcps = rcps;
    $scope.meals = meals;
    $scope.allMeals = true;
@@ -22,11 +22,10 @@ app.controller('homeController', ['$scope', 'login', '$http', '$state',
    $scope.getSelectedMeals = function(selectedDate) {
       $scope.selectedDate = selectedDate;
       $scope.allMeals = false;
-      console.log(selectedDate.getTime());
       $http.get("Prss/" + $rootScope.user._id + "/Mels?date=" +
        selectedDate.getTime())
+
       .then(function(response) {
-         console.log(JSON.stringify(response.data));
          $scope.meals = response.data;
       });
    }
@@ -34,6 +33,7 @@ app.controller('homeController', ['$scope', 'login', '$http', '$state',
    $scope.getAllMeals = function() {
       $scope.allMeals = true;
       $http.get("Prss/" + $rootScope.user._id + "/Mels")
+
       .then(function(response) {
          $scope.meals = response.data;
       });

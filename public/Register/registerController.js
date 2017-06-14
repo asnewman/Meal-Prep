@@ -1,6 +1,6 @@
 app.controller('registerController',
  ['$scope', '$state', '$http', 'login', '$rootScope', '$mdDialog', '$filter',
- function($scope, $state, $http, login, $rootScope, $mdDialog, $filter) {
+function($scope, $state, $http, login, $rootScope, $mdDialog, $filter) {
    $scope.root = $rootScope;
    $scope.user = {role: 0};
 
@@ -26,6 +26,7 @@ app.controller('registerController',
             $state.go('home');
          });
       })
+
       .catch(function(err) {
          if (err && err.data) {
             alert = $mdDialog.alert({
@@ -36,8 +37,8 @@ app.controller('registerController',
 
             return $mdDialog.show(alert)
             .finally(function() {
-             alert = undefined;
-           });
+               alert = undefined;
+            });
          }
       });
    };

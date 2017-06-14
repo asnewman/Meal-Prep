@@ -1,6 +1,6 @@
 app.controller('loginController',
  ['$scope', '$state', 'login', '$filter', '$rootScope', '$mdDialog',
- function($scope, $state, login, $filter, $rootScope, $mdDialog) {
+function($scope, $state, login, $filter, $rootScope, $mdDialog) {
 
    $scope.loginDlg = function() {
       $mdDialog.show({
@@ -37,6 +37,7 @@ app.controller('loginController',
 
    $scope.logout = function() {
       var cookie = login.getCookie();
+
       login.logout(cookie)
       .then(function() {
          // Handling the dialog
@@ -51,11 +52,13 @@ app.controller('loginController',
           alert = undefined;
         });
       })
+
       .then(function() {
          login.clearCookieData();
          $state.go('home');
          window.location.reload();
       })
+
       .catch(function() {
          $mdDialog.show($scope, "Failed to logout", "Error");
       })
